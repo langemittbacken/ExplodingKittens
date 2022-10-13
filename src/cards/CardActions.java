@@ -1,4 +1,4 @@
-package decksAndCards.cards;
+package cards;
 
 public class CardActions {
 

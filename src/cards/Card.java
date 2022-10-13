@@ -1,4 +1,4 @@
-package decksAndCards.cards;
+package cards;
 
 public abstract class Card {
 

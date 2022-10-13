@@ -7,7 +7,7 @@ public class ExplodingKittensGame {
       System.out.println();
       
       new GameHandler();
-      System.out.println("Bye Bye");
+      System.out.println("Bye Bye!");
    }
 
 }

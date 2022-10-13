@@ -1,4 +1,4 @@
-package decksAndCards;
+package decks;
 
 public class DeckHandler {
 

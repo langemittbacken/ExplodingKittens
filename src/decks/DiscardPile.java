@@ -1,4 +1,4 @@
-package decksAndCards.decks;
+package decks;
 
 public class DiscardPile {
 
