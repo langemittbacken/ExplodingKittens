@@ -2,9 +2,11 @@ package explodingKittensGame;
 
 import java.util.concurrent.TimeUnit;
 
-import cards.Card;
-import players.PlayerHand;
-
+/**
+ * puts together all game logic.
+ * @author langemittbacken
+ *
+ */
 public class GameHandler {
     public GameHandler(){
       
