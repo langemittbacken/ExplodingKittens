@@ -2,9 +2,8 @@ package players;
 
 import java.util.LinkedList;
 
-import javax.smartcardio.CardNotPresentException;
-
 import cards.Card;
+import exceptions.CardNotFoundException;
 
 public class PlayerHand {
    LinkedList<Card> hand;
@@ -13,13 +12,13 @@ public class PlayerHand {
       this.hand = new LinkedList<Card>(); 
    }
    
-   public Card getCard(Card card) throws CardNotPresentException {
+   public Card getCard(Card card) throws CardNotFoundException {
       
       if(hand.contains(card)) {
          return hand.get(hand.indexOf(card));
          
       } else {
-         throw new CardNotPresentException("");
+         throw new CardNotFoundException("Unable to find the card "+ card.cardName);
       }
       
    }
