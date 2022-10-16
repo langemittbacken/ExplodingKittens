@@ -1,6 +1,6 @@
 package players;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import cards.Card;
 import exceptions.CardNotFoundException;
@@ -11,10 +11,10 @@ import exceptions.CardNotFoundException;
  *
  */
 public class PlayerHand {
-   private LinkedList<Card> hand;
+   private ArrayList<Card> hand;
    
    public PlayerHand() {
-      this.hand = new LinkedList<Card>(); 
+      this.hand = new ArrayList<Card>(); 
    }
    
    public Card getCard(Card card) throws CardNotFoundException {

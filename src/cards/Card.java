@@ -1,7 +1,7 @@
 package cards;
 
 /**
- * Represents a playcard that is implemented by its own class.
+ * Represents a play card that is implemented by its own class.
  * @author langemittbacken
  *
  */
