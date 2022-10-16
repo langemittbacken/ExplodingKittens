@@ -7,21 +7,24 @@ import java.util.ArrayList;
 
 /**
  * handles all the players in a game and keeps track of whose turn it is.
+ * Singleton design pattern
  * @author langemittbacken
  *
  */
 public class PlayerHandler {
    
-   private ArrayList<Player> allPlayers;
-   
-   public PlayerHandler() {
+   private static ArrayList<Player> allPlayers;
+   private static int secondsToInterruptWithNope = 5;
+   private static PlayerHandler instance = new PlayerHandler();
+
+   private PlayerHandler() {
       allPlayers = new ArrayList<Player>();
    }
-   
-   
 
-   private static int secondsToInterruptWithNope = 5;
-   
+   public static PlayerHandler getInstance() {
+      return instance;
+   }
+
    public static int getSecondsToInterruptWithNope(){
       return secondsToInterruptWithNope;
    }
@@ -31,6 +34,14 @@ public class PlayerHandler {
       
       allPlayers.add(new Player(playerID, isBot, connectionSocket, inFromClient, outToClient));
       
+   }
+
+   public Player getPlayer(int playerID){
+      return allPlayers.get(playerID);
+   }
+
+   public ArrayList<Player> getAllPlayers(){
+      return allPlayers;
    }
    
 }

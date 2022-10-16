@@ -16,7 +16,7 @@ public class ExplodingKittensGame {
       
       if (args.length == 1) {//client
          try {
-            new Client(args[1]);
+            new Client(args[0]);
          } catch (Exception e) {
             
             System.out.println("could not connect to IP: " + args[1]);
@@ -25,8 +25,6 @@ public class ExplodingKittensGame {
       } else {
          new GameHandler();//server
       }
-     
-      System.out.println("Bye Bye!");
    }
 
 }

@@ -28,8 +28,28 @@ public class Player{
       this.hand = new PlayerHand();
       
    }
+
+   public int getPlayerID(){
+      return playerID;
+   }
+
+   public Socket getConnection(){
+      return connection;
+   }
    
-   public boolean isOnline() {
+   public ObjectInputStream getInFromClient(){
+      return inFromClient;
+   }
+
+   public ObjectOutputStream getOutToClient(){
+      return outToClient;
+   }
+
+   public boolean isBot(){
+      return isBot;
+   }
+
+   public boolean isOnline(){
       return online;
       
    }

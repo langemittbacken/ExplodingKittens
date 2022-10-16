@@ -2,6 +2,7 @@ package explodingKittensGame;
 
 import java.util.concurrent.TimeUnit;
 
+import players.PlayerHandler;
 import server.Server;
 
 /**
@@ -12,6 +13,8 @@ import server.Server;
 public class GameHandler {
    
    Server server;
+   PlayerHandler playerHandler;
+
     public GameHandler(){
       
       try {
