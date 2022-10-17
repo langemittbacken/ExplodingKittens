@@ -12,9 +12,11 @@ import exceptions.CardNotFoundException;
  */
 public class PlayerHand {
    private ArrayList<Card> hand;
+   private boolean blind;
    
    public PlayerHand() {
       this.hand = new ArrayList<Card>(); 
+      blind = false;
    }
    
    public Card getCard(Card card) throws CardNotFoundException {
@@ -28,12 +30,19 @@ public class PlayerHand {
       
    }
    
+   public String printHand() {
+      //TO-DO
+   }
+   
    public void addCard(Card card) {
       hand.add(card);
    }
    
    public void deleteCard(Card card) {
       hand.remove(card);
+   }
+   public void setBlind(boolean value) {
+      blind = value;
    }
 
 }
