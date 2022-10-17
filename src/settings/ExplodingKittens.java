@@ -8,4 +8,11 @@ package settings;
  */
 public class ExplodingKittens extends Gamemode{
 
+   @Override
+   public String cardSetupInstructions(int nrOfPlayers) {
+      
+      
+   }
+   
+
 }

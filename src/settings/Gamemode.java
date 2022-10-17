@@ -8,4 +8,7 @@ package settings;
  */
 public abstract class Gamemode {
 
+
+
+   public abstract String cardSetupInstructions(int nrOfPlayers);
 }

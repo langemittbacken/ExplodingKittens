@@ -1,5 +1,6 @@
 package cards;
 
+import players.Player;
 import players.PlayerHandler;
 import decks.Deck;
 import decks.DiscardPile;
@@ -11,5 +12,9 @@ import decks.DiscardPile;
  *
  */
 public class CardActions {
+   
+//   public void attack(Player player, int nrOfTurns) {
+//      
+//   }
 
 }
