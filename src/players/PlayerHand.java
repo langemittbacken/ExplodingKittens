@@ -1,6 +1,7 @@
 package players;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import cards.Card;
 import exceptions.CardNotFoundException;
@@ -32,6 +33,10 @@ public class PlayerHand {
    
    public String printHand() {
       //TO-DO
+   }
+
+   public void shuffleHand() {
+      Collections.shuffle(hand);
    }
    
    public void addCard(Card card) {

@@ -7,7 +7,8 @@ import decks.DiscardPile;
 
 /**
  * this class contains all the actions 
- * a card might do with card.performAction()
+ * a card might do. If a custom card needs new actions
+ * to do this is were to add those functionalities.
  * @author langemittbacken
  *
  */

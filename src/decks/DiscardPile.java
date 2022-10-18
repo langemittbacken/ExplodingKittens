@@ -5,6 +5,6 @@ package decks;
  * @author langemittbacken
  *
  */
-public class DiscardPile {
-
+public class DiscardPile extends Deck{
+//denna kan vara överflödig? troligtvis kan jag bara skapa två decks istället
 }
