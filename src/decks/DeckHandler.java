@@ -7,10 +7,14 @@ package decks;
  */
 public class DeckHandler {
 
-    Deck 
+    Deck deck;
+    Deck DiscardPile;
 
     public DeckHandler() {
-
+        deck = new Deck();
+        DiscardPile = new Deck();
     }
+
+    
 
 }

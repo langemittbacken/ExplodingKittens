@@ -11,7 +11,7 @@ import cards.Card;
  *
  */
 public class Deck {
-    LinkedList<Card> theDeck;
+    private LinkedList<Card> theDeck;
 
     public Deck() {
         theDeck = new LinkedList<Card>();
@@ -19,6 +19,10 @@ public class Deck {
 
     public void addCard(Card card) {
         theDeck.add(card);
+    }
+
+    public void addCard(int pos, Card card) {
+        theDeck.add(pos, card);
     }
 
     public Card drawCard() {
@@ -33,12 +37,39 @@ public class Deck {
         Collections.shuffle(theDeck);
     }
 
+    /**
+     * return, but does not remove, and in order, all cards from including startPos
+     * upto, but excluding, stopPos in the deck
+     * @param startPos inclusive
+     * @param stopPos exclusive, must be less than size of deck
+     * @return (stopPos-startPos) nr of cards in a LinkedList (in order)
+     */
     public LinkedList<Card> peekDeck(int startPos, int stopPos) {
-
+        LinkedList<Card> peekCards = new LinkedList<Card>();
+        for(int i = startPos; i < stopPos; i++){
+            peekCards.add(theDeck.get(i));
+        }
+        return peekCards;
     }
 
-    public void rearrangeDeck(LinkedList<Card> newOrderOnCards, int startPos, int stopPos) {
+    /**
+     * will replace cards from startPos (inclusive) to stopPos (exlusive)
+     * with newOrderOnCards (length of newOrderOnCards must be stopPos-startPos)
+     * @param newOrderOnCards 
+     * @param startPos inclusive
+     * @param stopPos exclusive, must be less than size of deck
+     * @throws Exception
+     */
+    public void rearrangeDeck(LinkedList<Card> newOrderOnCards, int startPos, int stopPos) throws Exception {
+        
+        if(newOrderOnCards.size() != stopPos-startPos) {
+            throw new Exception("stopPos-startPos(" + stopPos + "-" + startPos +
+             ") does not match length of newOrderOnCards");
+        }
 
+        for(int i = startPos; i < stopPos; i++){
+            theDeck.set(i, newOrderOnCards.removeFirst());
+        }
     }
 
     public boolean containsCard(Card card) {

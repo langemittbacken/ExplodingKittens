@@ -7,10 +7,10 @@ package cards;
  *
  */
 public abstract class Card {
-   private String cardName;
-   private boolean Nopeable;
-   private boolean PlainCard;
-   private boolean defuseable;
+   protected String cardName;
+   protected boolean Nopeable;
+   protected boolean PlainCard;
+   protected boolean defuseable;
    
    /**
     * what the card will do when played or activated in another way.
@@ -19,6 +19,13 @@ public abstract class Card {
 
    public abstract void onDrawingCard();
    
+   protected Card(String cardName, boolean Nopeable, boolean PlainCard, boolean defuseable){
+      this.cardName = cardName;
+      this.Nopeable = Nopeable;
+      this.PlainCard = PlainCard;
+      this.defuseable = defuseable;
+   }
+
    public String getName() {
       return cardName;
    }
