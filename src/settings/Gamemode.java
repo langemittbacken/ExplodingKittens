@@ -10,5 +10,5 @@ public abstract class Gamemode {
 
 
 
-   public abstract String cardSetupInstructions(int nrOfPlayers);
+   public abstract void deckSetup(int nrOfPlayers);
 }

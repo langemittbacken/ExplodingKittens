@@ -15,7 +15,7 @@ import exceptions.PlayerNotFoundException;
  */
 public class PlayerHandler {
    
-   private static LinkedList<Player> allPlayers;
+   private LinkedList<Player> allPlayers;
    private static int secondsToInterruptWithNope = 5;
    private static PlayerHandler instance = new PlayerHandler();
    private Player currentPlayer;// the player first in the player list

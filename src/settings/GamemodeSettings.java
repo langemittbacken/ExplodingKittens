@@ -5,37 +5,35 @@ package settings;
  * @author langemittbacken
  *
  */
-public class Settings {
+public class GamemodeSettings {
    private boolean basegame = true;
    
    private boolean includeImplodingKittens = false;
    private boolean includeStreakingKittens = false;
    private boolean includeBarkingKittens = false;
    
-   public Gamemode setupExplodingKittens() {
+   public Gamemode setupGameDeck(int nrOfPlayers) {
       Gamemode gamemode;
       if(basegame) {
          gamemode = new ExplodingKittens();
+         gamemode.deckSetup(nrOfPlayers);
+
       } else {
          gamemode = new MyCustomGamemode();//placeholder, change this if you implement your own base rules
+         gamemode.deckSetup(nrOfPlayers);
       }
      
       /*
       if (includeImplodingKittens) {//adjust the setup by including the expansion
-         mergeExpansion(gamemode, new ImplodingKittens())
+
       }
       if (includeStreakingKittens) {//adjust the setup by including the expansion
-         mergeExpansion(gamemode, new StreakingKittens())
+
       }
       if (includeBarkingKittens) {//adjust the setup by including the expansion
-         mergeExpansion(gamemode, new BarkingKittens());
+         
       }*/
       
       return gamemode;
    }
-   
-   private Gamemode mergeExpansion(Gamemode basegame, Gamemode expansion) {
-      return null;
-   }
-
 }

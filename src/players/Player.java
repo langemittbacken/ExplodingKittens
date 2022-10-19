@@ -4,13 +4,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import cards.Card;
+
 /**
  * represent a player playing the game.
  * @author langemittbacken
  *
  */
 public class Player{
-   PlayerHand hand;
+   private PlayerHand hand;
    private int playerID;
    private Socket connection;
    private ObjectInputStream inFromClient;
@@ -27,6 +29,10 @@ public class Player{
       }
       this.hand = new PlayerHand();
       
+   }
+
+   public void addCardToHand(Card card) {
+      hand.addCard(card);
    }
 
    public int getPlayerID(){

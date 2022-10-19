@@ -5,7 +5,7 @@ import cards.Card;
 public class ExplodingKitten extends Card{
 
     public ExplodingKitten() {
-        this.cardName = "s";
+        super("Exploding Kitten", false, false, true);
     }
 
     @Override
