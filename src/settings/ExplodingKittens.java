@@ -1,9 +1,7 @@
 package settings;
 
-import cards.Card;
 import cards.implCards.*;
 import decks.DeckHandler;
-import players.PlayerHandler;
 
 /**
  * this is a gamemode representing the card game with the same name

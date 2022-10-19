@@ -19,11 +19,11 @@ public class ExplodingKittensGame {
             new Client(args[0]);
          } catch (Exception e) {
             
-            System.out.println("could not connect to IP: " + args[1]);
+            System.out.println("could not connect to IP: " + args[0]);
             e.printStackTrace();
          }
       } else {
-         new GameHandler();//server
+         new MainMenu();//server
       }
    }
 

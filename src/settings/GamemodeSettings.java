@@ -7,7 +7,11 @@ package settings;
  */
 public class GamemodeSettings {
    private static boolean basegame = true;
+   private static int minPlayers = 2;
+   private static int maxAllowedPlayers = 5;
    
+
+
    private static boolean includeImplodingKittens = false;
    private static boolean includeStreakingKittens = false;
    private static boolean includeBarkingKittens = false;
@@ -52,5 +56,13 @@ public class GamemodeSettings {
       if (includeBarkingKittens) {//adjust the setup by including the expansion
          
       }*/
+   }  
+
+   public static int getMaxAllowedPlayers() {
+      return maxAllowedPlayers;
+   }
+
+   public static int getMinPlayers() {
+      return minPlayers;
    }
 }

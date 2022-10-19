@@ -17,7 +17,7 @@ import players.PlayerHandler;
 
 
 /**
- * an eventual future implementation that will make it possible to play on different systems.
+ * Server that host the game for players
  * @author langemittbacken
  *
  */
