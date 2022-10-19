@@ -9,11 +9,14 @@ package settings;
 public class MyCustomGamemode extends Gamemode {
 
     @Override
-    public void setupGame(int nrOfPlayers) {
+    public void setupCardsBeforeDealingHands(int nrOfPlayers) {
         // TODO Auto-generated method stub
         
     }
 
-
-
+    @Override
+    public void setupCardsAfterDealingHands(int nrOfPlayers) {
+        // TODO Auto-generated method stub
+        
+    }
 }

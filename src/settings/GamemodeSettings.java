@@ -6,21 +6,19 @@ package settings;
  *
  */
 public class GamemodeSettings {
-   private boolean basegame = true;
+   private static boolean basegame = true;
    
-   private boolean includeImplodingKittens = false;
-   private boolean includeStreakingKittens = false;
-   private boolean includeBarkingKittens = false;
+   private static boolean includeImplodingKittens = false;
+   private static boolean includeStreakingKittens = false;
+   private static boolean includeBarkingKittens = false;
    
-   public Gamemode setupGameDeck(int nrOfPlayers) {
-      Gamemode gamemode;
-      if(basegame) {
-         gamemode = new ExplodingKittens();
-         gamemode.deckSetup(nrOfPlayers);
+   public static void setupGameDeck(int nrOfPlayers) {
 
-      } else {
-         gamemode = new MyCustomGamemode();//placeholder, change this if you implement your own base rules
-         gamemode.deckSetup(nrOfPlayers);
+      if(basegame) {
+         new ExplodingKittens().setupCardsBeforeDealingHands(nrOfPlayers);
+
+      } else { 
+         new MyCustomGamemode().setupCardsBeforeDealingHands(nrOfPlayers);//placeholder, change this if you implement your own base rules
       }
      
       /*
@@ -33,7 +31,26 @@ public class GamemodeSettings {
       if (includeBarkingKittens) {//adjust the setup by including the expansion
          
       }*/
-      
-      return gamemode;
+   }
+
+   public static void finalizeSetup(int nrOfPlayers) {
+
+      if(basegame) {
+         new ExplodingKittens().setupCardsAfterDealingHands(nrOfPlayers);
+
+      } else { 
+         new MyCustomGamemode().setupCardsAfterDealingHands(nrOfPlayers);//placeholder, change this if you implement your own base rules
+      }
+     
+      /*
+      if (includeImplodingKittens) {//adjust the setup by including the expansion
+
+      }
+      if (includeStreakingKittens) {//adjust the setup by including the expansion
+
+      }
+      if (includeBarkingKittens) {//adjust the setup by including the expansion
+         
+      }*/
    }
 }

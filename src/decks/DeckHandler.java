@@ -26,18 +26,13 @@ public class DeckHandler {
     public Card drawCard() {
         return deck.drawCard();
     }
-    
-    /**
-     * 
-     * @param cardName must match the name of a card
-     * @param nrOfCards 
-     */
-    public void initializeDeck(Card[] cards, int[] nrOfCards) {
-        
+
+    public void addCardToDeck(Card card) {
+        deck.addCard(card);
     }
 
     public void insertCardInDeck(int pos, Card card) {
-
+        deck.addCard(pos, card);
     }
 
     public void toDiscardPile(Card card) {
