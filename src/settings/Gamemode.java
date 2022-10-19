@@ -10,5 +10,6 @@ public abstract class Gamemode {
 
 
 
-   public abstract void deckSetup(int nrOfPlayers);
+   public abstract void setupCardsBeforeDealingHands(int nrOfPlayers);
+   public abstract void setupCardsAfterDealingHands(int nrOfPlayers);
 }

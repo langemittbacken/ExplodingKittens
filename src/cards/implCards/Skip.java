@@ -2,10 +2,11 @@ package cards.implCards;
 
 import cards.Card;
 
-public class TacoCat extends Card {
+public class Skip extends Card {
 
-    public TacoCat() {
-        super("Taco Cat", true, true, false);
+    public Skip() {
+        super("Skip", true, false, false);
+        //TODO Auto-generated constructor stub
     }
 
     @Override
@@ -19,5 +20,6 @@ public class TacoCat extends Card {
         // TODO Auto-generated method stub
         
     }
+    
     
 }

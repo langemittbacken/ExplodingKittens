@@ -2,10 +2,11 @@ package cards.implCards;
 
 import cards.Card;
 
-public class TacoCat extends Card {
+public class Favor extends Card{
 
-    public TacoCat() {
-        super("Taco Cat", true, true, false);
+    public Favor() {
+        super("Favor", true, false, false);
+        //TODO Auto-generated constructor stub
     }
 
     @Override

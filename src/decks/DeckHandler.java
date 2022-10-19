@@ -4,6 +4,7 @@ import cards.Card;
 
 /**
  * handles distribution of the deck and discard pile.
+ * Singleton design pattern.
  * @author langemittbacken
  *
  */

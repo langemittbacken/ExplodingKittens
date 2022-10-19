@@ -18,8 +18,8 @@ public abstract class Card {
    public abstract void onPlayingCard();
 
    public abstract void onDrawingCard();
-   
-   protected Card(String cardName, boolean Nopeable, boolean PlainCard, boolean defuseable){
+
+   public Card(String cardName, boolean Nopeable, boolean PlainCard, boolean defuseable){
       this.cardName = cardName;
       this.Nopeable = Nopeable;
       this.PlainCard = PlainCard;

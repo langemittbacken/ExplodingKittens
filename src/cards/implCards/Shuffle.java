@@ -2,10 +2,10 @@ package cards.implCards;
 
 import cards.Card;
 
-public class TacoCat extends Card {
-
-    public TacoCat() {
-        super("Taco Cat", true, true, false);
+public class Shuffle extends Card{
+    
+    public Shuffle() {
+        super("Shuffle", true, false, false);
     }
 
     @Override
