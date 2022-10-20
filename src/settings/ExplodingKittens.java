@@ -1,7 +1,9 @@
 package settings;
 
+import java.util.LinkedList;
+
 import cards.implCards.*;
-import decks.DeckHandler;
+import players.Player;
 
 /**
  * this is a gamemode representing the card game with the same name
@@ -10,10 +12,12 @@ import decks.DeckHandler;
  *
  */
 public class ExplodingKittens extends Gamemode{
+   public final int STARTING_CARDS_ON_HAND = 8;
 
-   DeckHandler deckHandler = DeckHandler.getInstance();
-
+      @Override
    public void setupCardsBeforeDealingHands(int nrOfPlayers) {
+      
+
       int defuseCards = (nrOfPlayers<5) ? 2 : 1;
       int attackCards = 4;
       int favorCards = 4;
@@ -47,6 +51,22 @@ public class ExplodingKittens extends Gamemode{
       for(int i = 0; i<overweightBikiniCatCards; i++) {deckHandler.addCardToDeck(new OverweightBikiniCat());} 
    }
 
+      @Override
+   public void dealCards() {
+
+      for(Player player : playerHandler.getAllPlayers()) {
+         player.addCardToHand(new Defuse());
+      }
+
+      for(int i = 1; i < STARTING_CARDS_ON_HAND; i++){
+         for(Player player : playerHandler.getAllPlayers()) {
+            player.addCardToHand(deckHandler.drawCard());
+         }
+      }
+      
+   }
+
+      @Override
    public void setupCardsAfterDealingHands(int nrOfPlayers) {
 
       for(int i = 1; i < nrOfPlayers; i++) {
@@ -54,4 +74,6 @@ public class ExplodingKittens extends Gamemode{
       }
          
    }
+
+
 }

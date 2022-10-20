@@ -15,6 +15,12 @@ public class MyCustomGamemode extends Gamemode {
     }
 
     @Override
+    public void dealCards() {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    @Override
     public void setupCardsAfterDealingHands(int nrOfPlayers) {
         // TODO Auto-generated method stub
         

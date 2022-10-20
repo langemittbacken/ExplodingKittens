@@ -9,8 +9,6 @@ public class GamemodeSettings {
    private static boolean basegame = true;
    private static int minPlayers = 2;
    private static int maxAllowedPlayers = 5;
-   
-
 
    private static boolean includeImplodingKittens = false;
    private static boolean includeStreakingKittens = false;
@@ -25,7 +23,7 @@ public class GamemodeSettings {
          new MyCustomGamemode().setupCardsBeforeDealingHands(nrOfPlayers);//placeholder, change this if you implement your own base rules
       }
      
-      /*
+      
       if (includeImplodingKittens) {//adjust the setup by including the expansion
 
       }
@@ -34,7 +32,27 @@ public class GamemodeSettings {
       }
       if (includeBarkingKittens) {//adjust the setup by including the expansion
          
-      }*/
+      }
+   }
+
+   public static void dealCards() {
+      if(basegame) {
+         new ExplodingKittens().dealCards();
+
+      } else { 
+         new MyCustomGamemode().dealCards();//placeholder, change this if you implement your own base rules
+      }
+     
+      
+      if (includeImplodingKittens) {//adjust the setup by including the expansion
+
+      }
+      if (includeStreakingKittens) {//adjust the setup by including the expansion
+
+      }
+      if (includeBarkingKittens) {//adjust the setup by including the expansion
+         
+      }
    }
 
    public static void finalizeSetup(int nrOfPlayers) {
@@ -46,7 +64,7 @@ public class GamemodeSettings {
          new MyCustomGamemode().setupCardsAfterDealingHands(nrOfPlayers);//placeholder, change this if you implement your own base rules
       }
      
-      /*
+      
       if (includeImplodingKittens) {//adjust the setup by including the expansion
 
       }
@@ -55,7 +73,7 @@ public class GamemodeSettings {
       }
       if (includeBarkingKittens) {//adjust the setup by including the expansion
          
-      }*/
+      }
    }  
 
    public static int getMaxAllowedPlayers() {

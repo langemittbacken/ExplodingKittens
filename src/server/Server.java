@@ -93,7 +93,6 @@ public class Server {
     public String readMessage(Player player, boolean interruptable) {
         String word = " "; 
       
-      
         if(player.isOnline())
 
             try{

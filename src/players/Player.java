@@ -35,6 +35,10 @@ public class Player{
       hand.addCard(card);
    }
 
+   public String printHand() {
+      return hand.handToString();
+   }
+
    public int getPlayerID(){
       return playerID;
    }

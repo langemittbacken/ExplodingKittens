@@ -1,11 +1,14 @@
 package explodingKittensGame;
 
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Ignore;
+import org.junit.Test;
+
+import decks.DeckHandler;
+import players.Player;
 import players.PlayerHandler;
 import server.Server;
-import settings.Gamemode;
 import settings.GamemodeSettings;
 
 /**
@@ -17,6 +20,7 @@ public class GameHandler {
    
    Server server;
    PlayerHandler playerHandler;
+   DeckHandler deckHandler;
 
 
     public GameHandler(int nrOfPlayers, int nrOfBots) throws Exception{
@@ -26,24 +30,40 @@ public class GameHandler {
       };
 
       try {
-         
          server = new Server(nrOfPlayers,nrOfBots);
+
       } catch (Exception e1) {
          e1.printStackTrace();
       } 
       
+      playerHandler = PlayerHandler.getInstance();
+      deckHandler = DeckHandler.getInstance();
 
-      //this code will be removed
-      int i = 0;
-        while(true){
-           System.out.println(i++);
-            try {
-               TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-               e.printStackTrace();
-            }
-        }
+      setupDeckAndPlayerHands(nrOfPlayers+nrOfBots);
+
+      server.sendMsgToAllPlayers("goa gubbar i göteborg");
+
+      while(true) {
+         //HERE THE GAME WILL BE CONTROLLED IN LIKE TURNS AND STUFF
+      }
     }
-    
-    
+
+
+   private void setupDeckAndPlayerHands(int totalPlayers) {
+
+      GamemodeSettings.setupGameDeck(totalPlayers);
+      deckHandler.shuffleDeck();
+      GamemodeSettings.dealCards();
+      GamemodeSettings.finalizeSetup(totalPlayers);
+      deckHandler.shuffleDeck();
+   }
+   
+/**
+ * only for JUnit testing, should not be used!
+ * @param pHandler - just to make sure playerhandler is present
+ * @param deckHandler - just to make sure deckHandler is present
+ */
+   public void testSetupDeckAndPlayerHands(PlayerHandler pHandler, DeckHandler deckHandler) {
+      setupDeckAndPlayerHands(playerHandler.getAllPlayers().size());
+   }
 }

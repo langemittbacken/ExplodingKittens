@@ -27,13 +27,16 @@ public class PlayerHand {
          
       } else {
          throw new CardNotFoundException("Unable to find the card "+ card.getName());
-      }
-      
+      } 
    }
    
-   // public String printHand() {
-   //    //TO-DO
-   // }
+   public String handToString() {
+      String strHand = "";
+      for(Card card : hand) {
+         strHand = strHand + ("[" + card.getName() + "] ");
+      }
+      return strHand;
+   }
 
    public void shuffleHand() {
       Collections.shuffle(hand);

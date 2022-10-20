@@ -42,7 +42,8 @@ public class MainMenu {
                 bots = myScan.nextInt();
 
                 if(bots+players < minPlayers || bots+players > maxAllowedPlayers){
-                    System.out.println("you added a total of " + (bots+players) + " players but have to be between(" + minPlayers + "-" + maxAllowedPlayers+ ")");
+                    System.out.println("you added a total of " + (bots+players) + " players but have to be between(" 
+                    + minPlayers + "-" + maxAllowedPlayers+ ") for current gamemode");
                     System.out.println();
                     continue;
                 }
