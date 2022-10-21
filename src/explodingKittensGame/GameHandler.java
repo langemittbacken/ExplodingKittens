@@ -47,10 +47,13 @@ public class GameHandler {
       playerHandler.startTurnOrder(true);
       sendGameStartedMessage();
 
-      while(true) {//HERE THE GAME WILL BE CONTROLLED IN LIKE TURNS AND STUFF
-         sendWhoseTurnItIs();
-         currentPlayer = playerHandler.getCurrentPlayer();
+      while(true) {
 
+         if(currentPlayer != playerHandler.getCurrentPlayer()) {
+            currentPlayer = playerHandler.getCurrentPlayer();
+            sendWhoseTurnItIs(currentPlayer);
+         }
+         
          action = getActionFromCurrentPlayer(currentPlayer).trim();
          System.out.println(action + " sent by Player" + currentPlayer.getPlayerID());
          
@@ -67,8 +70,6 @@ public class GameHandler {
             continue;
          }
 
-
-
          if(!action.equalsIgnoreCase("pass")){
             try {
                deckHandler.playCard(currentPlayer.takeCardFromHand(action));
@@ -81,6 +82,7 @@ public class GameHandler {
          }
 
          currentPlayer.addCardToHand(deckHandler.drawCard());
+         sendHandToPlayer(currentPlayer);
          playerHandler.nextTurn();
       }
     }
@@ -105,18 +107,22 @@ public class GameHandler {
    
    private void sendHandToPlayers() {
       for(Player p : playerHandler.getAllPlayers()){
-         server.sendMessage(p, "Your hand:");
-         server.sendMessage(p, p.printHand() + "\n");
+         sendHandToPlayer(p);
       }
    }
    
+   private void sendHandToPlayer(Player p) {
+      server.sendMessage(p, "Your hand:");
+      server.sendMessage(p, p.printHand() + "\n");
+   }
+
    private void sendGameStartedMessage() {
       server.sendMsgToAllPlayers("Game started!\n");
    }
 
-   private void sendWhoseTurnItIs() {
+   private void sendWhoseTurnItIs(Player currentPlayer) {
 
-      int id = playerHandler.getCurrentPlayer().getPlayerID();
+      int id = currentPlayer.getPlayerID();
       server.sendMsgToAllPlayers("Player " + Integer.toString(id) + "'s turn\n");
    }
 

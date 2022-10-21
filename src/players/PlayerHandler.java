@@ -22,11 +22,13 @@ public class PlayerHandler {
    private Player currentPlayer;// the player first in the player list
    private int turnsLeft;
    private boolean clockwiseTurnOrder;
+   private boolean ongoingAttack;
 
    private PlayerHandler() {
       allPlayers = new LinkedList<Player>();
       clockwiseTurnOrder = true;
       turnsLeft = 1;
+      ongoingAttack = false;
    }
 
    public static PlayerHandler getInstance() {
@@ -52,15 +54,23 @@ public class PlayerHandler {
       }
    }
 
+   public void attackNextPlayer(int totalNrOfTurns) {
+      turnsLeft = totalNrOfTurns;
+      nextPlayer();
+      ongoingAttack = true;
+   }
+
    public void attackPlayer(Player player, int totalNrOfTurns) {
+      turnsLeft = totalNrOfTurns;
       while(currentPlayer != player) {
          nextPlayer();
       }
-      turnsLeft = totalNrOfTurns;
+      ongoingAttack = true;
    }
 
    public void nextTurn() {
       if(turnsLeft<=1){
+         ongoingAttack = false;
          nextPlayer();
          turnsLeft = 1;
       } else {
@@ -71,7 +81,7 @@ public class PlayerHandler {
    
    private Player nextPlayer() {
       if (clockwiseTurnOrder) {
-         currentPlayer = allPlayers.removeFirst();
+         currentPlayer = allPlayers.removeFirst(); //should already be first if nothing unpredicted has happened
          allPlayers.addLast(currentPlayer);
          currentPlayer = allPlayers.getFirst();
          
@@ -121,5 +131,9 @@ public class PlayerHandler {
 
    public int getTurnsLeft() {
       return turnsLeft;
+   }
+
+   public boolean OngoingAttack() {
+      return ongoingAttack;
    }
 }
