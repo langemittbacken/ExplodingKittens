@@ -20,6 +20,7 @@ public class GameHandler {
    PlayerHandler playerHandler;
    DeckHandler deckHandler;
 
+   Player currentPlayer;
    String action;
 
 
@@ -48,16 +49,38 @@ public class GameHandler {
 
       while(true) {//HERE THE GAME WILL BE CONTROLLED IN LIKE TURNS AND STUFF
          sendWhoseTurnItIs();
-         Player currentPlayer = playerHandler.getCurrentPlayer();
+         currentPlayer = playerHandler.getCurrentPlayer();
 
-         action = getActionFromCurrentPlayer(currentPlayer);
+         action = getActionFromCurrentPlayer(currentPlayer).trim();
+         System.out.println(action + " sent by Player" + currentPlayer.getPlayerID());
          
-         if(action == "pass"){
-            currentPlayer.addCardToHand(deckHandler.drawCard());
-         } else {
-            currentPlayer.getCard ////////////////////////////////////////// HITTA KORT I HANDEN, TA KORTET OCH SPELA KORTET
+         //playing 2 cards
+         if(action.length() > 2 && action.substring(0, 2).equalsIgnoreCase("2x")){
+            server.sendMessage(currentPlayer, "Sorry but 2x is yet to be implemented");
+            //TO-DO ----------------------------------------------------------------------------
+            continue;
+         }
+         //playing 3 cards
+         if(action.length() > 2 && action.substring(0, 2).equalsIgnoreCase("3x")){
+            server.sendMessage(currentPlayer, "Sorry but 3x is yet to be implemented");
+            //TO-DO ----------------------------------------------------------------------------
+            continue;
          }
 
+
+
+         if(!action.equalsIgnoreCase("pass")){
+            try {
+               deckHandler.playCard(currentPlayer.takeCardFromHand(action));
+               
+
+            } catch (Exception e) {
+               server.sendMessage(currentPlayer, "could not handle your action \"" + action + "\"");
+            }
+            continue;
+         }
+
+         currentPlayer.addCardToHand(deckHandler.drawCard());
          playerHandler.nextTurn();
       }
     }
@@ -94,7 +117,7 @@ public class GameHandler {
    private void sendWhoseTurnItIs() {
 
       int id = playerHandler.getCurrentPlayer().getPlayerID();
-      server.sendMsgToAllPlayers("It is now Player " + Integer.toString(id) + "'s turn");
+      server.sendMsgToAllPlayers("Player " + Integer.toString(id) + "'s turn\n");
    }
 
    private String getActionFromCurrentPlayer(Player currentPlayer) {

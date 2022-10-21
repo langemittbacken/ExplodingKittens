@@ -24,9 +24,9 @@ public class DeckHandler {
     } 
 
     public Card drawCard() {
-        Card c = deck.drawCard();
-        c.onDrawingCard();
-        return c;
+        Card card = deck.drawCard();
+        card.onDrawingCard();
+        return card;
     }
 
     public void playCard(Card card) {

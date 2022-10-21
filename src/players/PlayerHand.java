@@ -64,4 +64,22 @@ public class PlayerHand {
       blind = value;
    }
 
+   public Card takeCard(int index) throws IndexOutOfBoundsException {
+      if(hand.size() <= index) {
+         throw new IndexOutOfBoundsException();
+      }
+      return hand.remove(index);
+   }
+
+public Card takeCard(String cardNameOrIndex) throws CardNotFoundException {
+    
+   for (Card card : hand) {
+      if (card.getName().equalsIgnoreCase(cardNameOrIndex)){
+         hand.remove(card);
+         return card;
+      }
+   }
+   throw new CardNotFoundException(cardNameOrIndex);
+}
+
 }

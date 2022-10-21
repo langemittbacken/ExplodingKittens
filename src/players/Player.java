@@ -5,6 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import cards.Card;
+import exceptions.CardNotFoundException;
 
 /**
  * represent a player playing the game.
@@ -33,6 +34,16 @@ public class Player{
 
    public void addCardToHand(Card card) {
       hand.addCard(card);
+   }
+
+   public Card takeCardFromHand(String cardNameOrIndex) throws CardNotFoundException {
+
+      try {
+         return hand.takeCard(Integer.parseInt(cardNameOrIndex));
+      } catch (Exception e) {
+         return hand.takeCard(cardNameOrIndex);
+      }
+      
    }
 
    public String printHand() {
