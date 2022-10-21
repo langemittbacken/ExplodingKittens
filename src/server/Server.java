@@ -72,7 +72,7 @@ public class Server {
             System.out.println("Connected to player " + i);
             outToClient.writeObject("You connected to the server as player " + i + "\n");
         } 
-        sendMsgToAllPlayers("All players connected!");
+        sendMsgToAllPlayers("All players connected!\n");
     } 
    
     public void sendMessage(Player player, Object message) {

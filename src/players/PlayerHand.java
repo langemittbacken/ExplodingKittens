@@ -13,7 +13,7 @@ import exceptions.CardNotFoundException;
  */
 public class PlayerHand {
    private ArrayList<Card> hand;
-   private boolean blind;
+   protected boolean blind;
    
    public PlayerHand() {
       this.hand = new ArrayList<Card>(); 
@@ -32,8 +32,19 @@ public class PlayerHand {
    
    public String handToString() {
       String strHand = "";
+
+      if(blind){
+         strHand ="(*Blind*) ";
+         for(int i = 0; i < hand.size(); i++){
+            strHand = strHand + "[*" + i + "*]\n";
+         }
+         return strHand ;
+      }
+
+      int i = 0;
       for(Card card : hand) {
-         strHand = strHand + ("[" + card.getName() + "] ");
+         strHand = strHand + ("[" + i + "] [" + card.getName() + "]\n");
+         i++;
       }
       return strHand;
    }

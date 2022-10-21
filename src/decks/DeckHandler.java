@@ -24,7 +24,14 @@ public class DeckHandler {
     } 
 
     public Card drawCard() {
-        return deck.drawCard();
+        Card c = deck.drawCard();
+        c.onDrawingCard();
+        return c;
+    }
+
+    public void playCard(Card card) {
+        card.onPlayingCard();
+        toDiscardPile(card);
     }
 
     public void addCardToDeck(Card card) {

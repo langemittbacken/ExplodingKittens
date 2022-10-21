@@ -2,10 +2,8 @@ package explodingKittensGame;
 
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
 import decks.DeckHandler;
+import exceptions.CardNotFoundException;
 import players.Player;
 import players.PlayerHandler;
 import server.Server;
@@ -21,6 +19,8 @@ public class GameHandler {
    Server server;
    PlayerHandler playerHandler;
    DeckHandler deckHandler;
+
+   String action;
 
 
     public GameHandler(int nrOfPlayers, int nrOfBots) throws Exception{
@@ -41,13 +41,26 @@ public class GameHandler {
 
       setupDeckAndPlayerHands(nrOfPlayers+nrOfBots);
 
-      server.sendMsgToAllPlayers("goa gubbar i göteborg");
+      sendHandToPlayers();
 
-      while(true) {
-         //HERE THE GAME WILL BE CONTROLLED IN LIKE TURNS AND STUFF
+      playerHandler.startTurnOrder(true);
+      sendGameStartedMessage();
+
+      while(true) {//HERE THE GAME WILL BE CONTROLLED IN LIKE TURNS AND STUFF
+         sendWhoseTurnItIs();
+         Player currentPlayer = playerHandler.getCurrentPlayer();
+
+         action = getActionFromCurrentPlayer(currentPlayer);
+         
+         if(action == "pass"){
+            currentPlayer.addCardToHand(deckHandler.drawCard());
+         } else {
+            currentPlayer.getCard ////////////////////////////////////////// HITTA KORT I HANDEN, TA KORTET OCH SPELA KORTET
+         }
+
+         playerHandler.nextTurn();
       }
     }
-
 
    private void setupDeckAndPlayerHands(int totalPlayers) {
 
@@ -65,5 +78,31 @@ public class GameHandler {
  */
    public void testSetupDeckAndPlayerHands(PlayerHandler pHandler, DeckHandler deckHandler) {
       setupDeckAndPlayerHands(playerHandler.getAllPlayers().size());
+   }
+   
+   private void sendHandToPlayers() {
+      for(Player p : playerHandler.getAllPlayers()){
+         server.sendMessage(p, "Your hand:");
+         server.sendMessage(p, p.printHand() + "\n");
+      }
+   }
+   
+   private void sendGameStartedMessage() {
+      server.sendMsgToAllPlayers("Game started!\n");
+   }
+
+   private void sendWhoseTurnItIs() {
+
+      int id = playerHandler.getCurrentPlayer().getPlayerID();
+      server.sendMsgToAllPlayers("It is now Player " + Integer.toString(id) + "'s turn");
+   }
+
+   private String getActionFromCurrentPlayer(Player currentPlayer) {
+
+      server.sendMessage(currentPlayer, currentPlayer.printHand());
+      server.sendMessage(currentPlayer, "*options*: play card or pass");
+
+      return server.readMessage(currentPlayer, false);
+
    }
 }

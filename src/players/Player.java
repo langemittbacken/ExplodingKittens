@@ -39,6 +39,10 @@ public class Player{
       return hand.handToString();
    }
 
+   public void setBlind(boolean value) {
+      hand.setBlind(value);
+   }
+
    public int getPlayerID(){
       return playerID;
    }
