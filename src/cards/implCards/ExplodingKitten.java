@@ -1,6 +1,7 @@
 package cards.implCards;
 
 import cards.Card;
+import cards.CardActions;
 
 public class ExplodingKitten extends Card{
 
@@ -16,8 +17,7 @@ public class ExplodingKitten extends Card{
 
     @Override
     public void onDrawingCard() {
-        // TODO Auto-generated method stub
-        
+        CardActions.explodeCurrentPlayer(defuseable, this);
     }
     
 }

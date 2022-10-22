@@ -34,6 +34,7 @@ public class Player{
 
    public void addCardToHand(Card card) {
       hand.addCard(card);
+      card.onDrawingCard();
    }
 
    public Card takeCardFromHand(String cardNameOrIndex) throws CardNotFoundException {

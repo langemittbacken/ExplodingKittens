@@ -23,13 +23,14 @@ import players.PlayerHandler;
  */
 public class Server {
    
+    private static Server instance = null;
     private int secondsToInterruptWithNope = PlayerHandler.getSecondsToInterruptWithNope();
    
     public ServerSocket aSocket;
     public PlayerHandler playerHandler;
     Scanner in;
    
-    public Server(int numberPlayers, int numberOfBots) throws Exception {
+    private Server(int numberPlayers, int numberOfBots) throws Exception {
       
         this.playerHandler = PlayerHandler.getInstance();
         
@@ -74,6 +75,16 @@ public class Server {
         } 
         sendMsgToAllPlayers("All players connected!\n");
     } 
+
+    public static void startInstance(int nrOfPlayers, int nrOfBots) throws Exception {
+        if (instance == null) {
+                    instance = new Server(nrOfPlayers, nrOfBots);
+        }
+    }
+
+    public static Server getInstance() {
+        return instance;
+    }
    
     public void sendMessage(Player player, Object message) {
         if(player.isOnline()) {

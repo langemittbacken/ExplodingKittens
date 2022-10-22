@@ -25,6 +25,10 @@ public class Deck {
         theDeck.add(pos, card);
     }
 
+    public void addAllCards(LinkedList<Card> cards) {
+        theDeck.addAll(cards);
+    }
+
     public Card drawCard() {
         return theDeck.removeFirst();
     }

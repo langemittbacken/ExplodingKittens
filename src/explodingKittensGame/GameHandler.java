@@ -26,14 +26,13 @@ public class GameHandler {
 
     public GameHandler(int nrOfPlayers, int nrOfBots) throws Exception{
 
-      
-
       if(GamemodeSettings.getMaxAllowedPlayers()<(nrOfPlayers+nrOfBots) || GamemodeSettings.getMinPlayers()>(nrOfPlayers+nrOfBots)) {
          throw new Exception("between "+ GamemodeSettings.getMinPlayers() +" and "+ GamemodeSettings.getMaxAllowedPlayers() +" players allowed for current gamemode settings");
       };
 
       try {
-         server = new Server(nrOfPlayers,nrOfBots);
+         Server.startInstance(nrOfPlayers,nrOfBots);
+         server = Server.getInstance();
 
       } catch (Exception e1) {
          e1.printStackTrace();

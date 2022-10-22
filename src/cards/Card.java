@@ -17,6 +17,9 @@ public abstract class Card {
     */
    public abstract void onPlayingCard();
 
+   /**
+    * activated when a card is placed into a players hand
+    */
    public abstract void onDrawingCard();
 
    public Card(String cardName, boolean Nopeable, boolean PlainCard, boolean defuseable){

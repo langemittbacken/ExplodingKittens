@@ -1,5 +1,7 @@
 package decks;
 
+import java.util.LinkedList;
+
 import cards.Card;
 
 /**
@@ -25,7 +27,6 @@ public class DeckHandler {
 
     public Card drawCard() {
         Card card = deck.drawCard();
-        card.onDrawingCard();
         return card;
     }
 
@@ -44,6 +45,10 @@ public class DeckHandler {
 
     public void toDiscardPile(Card card) {
         DiscardPile.addCard(card);
+    }
+
+    public void toDiscardPile(LinkedList<Card> cards) {
+        DiscardPile.addAllCards(cards);
     }
 
     public void shuffleDeck() {

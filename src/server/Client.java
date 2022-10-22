@@ -35,7 +35,7 @@ public class Client {
                   String nextMessage = (String) inFromServer.readObject();
                   System.out.println(nextMessage);  
                   
-                  if(nextMessage.contains("*options*") || nextMessage.contains("*Give*") || nextMessage.contains("*Where*")){ //options (your turn), Give (Opponent played Favor), Where (You defused an exploding kitten)
+                  if(nextMessage.contains("*options*")){ //*options* tells the user they should insert a command
                      outToServer.writeObject(br.readLine());
                      
                   } else if(nextMessage.contains("<Enter>")) { //Press <Enter> to play Nope and Interrupt
