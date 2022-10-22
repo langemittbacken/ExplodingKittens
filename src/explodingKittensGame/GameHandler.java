@@ -2,6 +2,7 @@ package explodingKittensGame;
 
 import java.util.concurrent.TimeUnit;
 
+import cards.Card;
 import decks.DeckHandler;
 import exceptions.CardNotFoundException;
 import players.Player;
@@ -21,10 +22,11 @@ public class GameHandler {
    DeckHandler deckHandler;
 
    Player currentPlayer;
-   String action;
 
 
     public GameHandler(int nrOfPlayers, int nrOfBots) throws Exception{
+
+      
 
       if(GamemodeSettings.getMaxAllowedPlayers()<(nrOfPlayers+nrOfBots) || GamemodeSettings.getMinPlayers()>(nrOfPlayers+nrOfBots)) {
          throw new Exception("between "+ GamemodeSettings.getMinPlayers() +" and "+ GamemodeSettings.getMaxAllowedPlayers() +" players allowed for current gamemode settings");
@@ -48,44 +50,57 @@ public class GameHandler {
       sendGameStartedMessage();
 
       while(true) {
-
-         if(currentPlayer != playerHandler.getCurrentPlayer()) {
-            currentPlayer = playerHandler.getCurrentPlayer();
-            sendWhoseTurnItIs(currentPlayer);
+         gameLoop();
+         if(playerHandler.getAllPlayers().size() == 1){
+            break;
          }
-         
-         action = getActionFromCurrentPlayer(currentPlayer).trim();
-         System.out.println(action + " sent by Player" + currentPlayer.getPlayerID());
-         
-         //playing 2 cards
-         if(action.length() > 2 && action.substring(0, 2).equalsIgnoreCase("2x")){
-            server.sendMessage(currentPlayer, "Sorry but 2x is yet to be implemented");
-            //TO-DO ----------------------------------------------------------------------------
-            continue;
-         }
-         //playing 3 cards
-         if(action.length() > 2 && action.substring(0, 2).equalsIgnoreCase("3x")){
-            server.sendMessage(currentPlayer, "Sorry but 3x is yet to be implemented");
-            //TO-DO ----------------------------------------------------------------------------
-            continue;
-         }
-
-         if(!action.equalsIgnoreCase("pass")){
-            try {
-               deckHandler.playCard(currentPlayer.takeCardFromHand(action));
-               
-
-            } catch (Exception e) {
-               server.sendMessage(currentPlayer, "could not handle your action \"" + action + "\"");
-            }
-            continue;
-         }
-
-         currentPlayer.addCardToHand(deckHandler.drawCard());
-         sendHandToPlayer(currentPlayer);
-         playerHandler.nextTurn();
       }
+      server.sendMsgToAllPlayers("Player " + playerHandler.getAllPlayers().getFirst().getPlayerID() + " Won!\n");
     }
+
+   private void gameLoop() {
+      String action;
+      Card card;
+
+      if(currentPlayer != playerHandler.getCurrentPlayer()) {
+         currentPlayer = playerHandler.getCurrentPlayer();
+         sendWhoseTurnItIs(currentPlayer);
+      }
+      
+      action = getActionFromCurrentPlayer(currentPlayer).trim();
+      System.out.println(action + " sent by Player" + currentPlayer.getPlayerID());
+      
+      //playing 2 cards
+      if(action.length() > 2 && action.substring(0, 2).equalsIgnoreCase("2x")){
+         server.sendMessage(currentPlayer, "Sorry but 2x is yet to be implemented");
+         //TO-DO ----------------------------------------------------------------------------
+         return;
+      }
+      //playing 3 cards
+      if(action.length() > 2 && action.substring(0, 2).equalsIgnoreCase("3x")){
+         server.sendMessage(currentPlayer, "Sorry but 3x is yet to be implemented");
+         //TO-DO ----------------------------------------------------------------------------
+         return;
+      }
+
+      if(!action.equalsIgnoreCase("pass")){
+         try {
+            card = currentPlayer.takeCardFromHand(action);
+            deckHandler.playCard(card);
+            server.sendMsgToAllPlayers("Player " + currentPlayer.getPlayerID() + " played [" + card.getName() + "]");
+
+         } catch (Exception e) {
+            server.sendMessage(currentPlayer, "could not handle your action \"" + action + "\"");
+         }
+         return;
+      }
+
+      server.sendMsgToAllPlayers("Player " + currentPlayer.getPlayerID() + " drew a card");
+      currentPlayer.addCardToHand(deckHandler.drawCard());
+      sendHandToPlayer(currentPlayer);
+      
+      playerHandler.nextTurn();
+   }
 
    private void setupDeckAndPlayerHands(int totalPlayers) {
 
@@ -124,12 +139,15 @@ public class GameHandler {
 
       int id = currentPlayer.getPlayerID();
       server.sendMsgToAllPlayers("Player " + Integer.toString(id) + "'s turn\n");
+      if(playerHandler.getTurnsLeft() > 1){
+         server.sendMsgToAllPlayers("Player " + Integer.toString(id) + " have " + playerHandler.getTurnsLeft() + " turns to play\n");
+      }
    }
 
    private String getActionFromCurrentPlayer(Player currentPlayer) {
 
       server.sendMessage(currentPlayer, currentPlayer.printHand());
-      server.sendMessage(currentPlayer, "*options*: play card or pass");
+      server.sendMessage(currentPlayer, "*options*: play card(s) or pass");
 
       return server.readMessage(currentPlayer, false);
 
