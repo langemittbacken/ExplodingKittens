@@ -85,12 +85,15 @@ public class GameHandler {
       if(!action.equalsIgnoreCase("pass")){
          try {
             card = currentPlayer.takeCardFromHand(action);
-            deckHandler.playCard(card);
             server.sendMsgToAllPlayers("Player " + currentPlayer.getPlayerID() + " played [" + card.getName() + "]");
+            //_______________________________________________ADD SOM NOPE POSIBILITY HERE_____________________________________________________________________________________
+            deckHandler.playCard(card);
 
          } catch (Exception e) {
             server.sendMessage(currentPlayer, "could not handle your action \"" + action + "\"");
          }
+
+         
          return;
       }
 
@@ -148,7 +151,7 @@ public class GameHandler {
       server.sendMessage(currentPlayer, currentPlayer.printHand());
       server.sendMessage(currentPlayer, "*options*: play card(s) or pass");
 
-      return server.readMessage(currentPlayer, false);
+      return server.readMessage(currentPlayer, true);
 
    }
 }

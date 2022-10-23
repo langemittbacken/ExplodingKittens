@@ -76,4 +76,42 @@ public class CardActions {
         }
     }
 
+    public static void askForFavor() {
+        Player currentPlayer = playerHandler.getCurrentPlayer();
+        Player attackedPlayer = null;
+
+        for(Player player : playerHandler.getActivePlayers()){
+            if(player != currentPlayer){
+                server.sendMessage(playerHandler.getCurrentPlayer(), "Player " + player.getPlayerID() + " has " + player.nrOfCardsInHand() + " cards");
+            } 
+        }
+        
+        while(attackedPlayer == null){
+            server.sendMessage(currentPlayer, "*options* which player do you want a favor from?");
+            String answer = server.readMessage(currentPlayer, true);
+            attackedPlayer = playerHandler.getPlayerFromString(answer);
+        }
+        
+        Card cardFromAttackedPlayer = cardFromAttackedPlayer(attackedPlayer, currentPlayer);
+
+        currentPlayer.addCardToHand(cardFromAttackedPlayer);
+        server.sendMessage(currentPlayer, "recieved [" + cardFromAttackedPlayer.getName() + "] from Player " + attackedPlayer.getPlayerID());
+    }
+
+    private static Card cardFromAttackedPlayer(Player attackedPlayer, Player currentPlayer) {
+        while(true){
+            server.sendMessage(attackedPlayer, attackedPlayer.printHand());
+            server.sendMessage(attackedPlayer, "Player " + currentPlayer.getPlayerID() + " asked you for a favor");
+            server.sendMessage(currentPlayer, "*options* pick card to give to Player " + currentPlayer.getPlayerID());
+            String favorCard = server.readMessage(attackedPlayer, true);
+        
+            try {
+                return attackedPlayer.takeCardFromHand(favorCard);
+
+            } catch (Exception e) {
+                server.sendMessage(attackedPlayer, "invalid input");
+                continue;
+            }   
+        }
+    }
 }

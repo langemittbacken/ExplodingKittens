@@ -96,6 +96,10 @@ public class Player{
       return hand.emptyHand();
    }
 
+   public int nrOfCardsInHand() {
+      return hand.nrOfCards();
+   }
+
    
 
 }

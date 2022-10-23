@@ -160,4 +160,8 @@ public class PlayerHandler {
       explodedPlayers.add(player);
       return player.emptyHand();
    }
+
+   public Player getPlayerFromString(String answer) {
+      //used in cardActions for Favor card----------------------------------------------------------------------------------------------------------------------------
+   }
 }

@@ -73,6 +73,10 @@ public class PlayerHand {
       blind = value;
    }
 
+   public int nrOfCards() {
+      return hand.size();
+   }
+
    public Card takeCard(int index) throws IndexOutOfBoundsException {
       if(hand.size() <= index) {
          throw new IndexOutOfBoundsException();
