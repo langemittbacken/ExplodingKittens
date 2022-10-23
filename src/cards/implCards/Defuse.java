@@ -9,15 +9,11 @@ public class Defuse extends Card{
     }
 
     @Override
-    public void onPlayingCard() {
-        
-        
+    public void onPlayingCard() {   
     }
 
     @Override
     public void onDrawingCard() {
-        // TODO Auto-generated method stub
-        
     }
     
 }

@@ -5,6 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 
+import cards.Card;
 import exceptions.PlayerNotFoundException;
 
 /**
@@ -15,7 +16,8 @@ import exceptions.PlayerNotFoundException;
  */
 public class PlayerHandler {
    
-   private LinkedList<Player> allPlayers;
+   private LinkedList<Player> activePlayers;
+   private LinkedList<Player> explodedPlayers;
    private static int secondsToInterruptWithNope = 5;
    private static PlayerHandler instance = new PlayerHandler();
 
@@ -25,7 +27,8 @@ public class PlayerHandler {
    private boolean ongoingAttack;
 
    private PlayerHandler() {
-      allPlayers = new LinkedList<Player>();
+      activePlayers = new LinkedList<Player>();
+      explodedPlayers = new LinkedList<Player>();
       clockwiseTurnOrder = true;
       turnsLeft = 1;
       ongoingAttack = false;
@@ -41,12 +44,12 @@ public class PlayerHandler {
     */
    public void startTurnOrder(boolean randomStartPlayer) {
       
-      currentPlayer = allPlayers.getFirst();
+      currentPlayer = activePlayers.getFirst();
       if (!randomStartPlayer) {
          return;
       }
       
-      int positionsToMoveForward = (int)(Math.random()*allPlayers.size());
+      int positionsToMoveForward = (int)(Math.random()*activePlayers.size());
      
       while(positionsToMoveForward>0) {
          nextPlayer();
@@ -81,13 +84,13 @@ public class PlayerHandler {
    
    private Player nextPlayer() {
       if (clockwiseTurnOrder) {
-         currentPlayer = allPlayers.removeFirst(); //should already be first if nothing unpredicted has happened
-         allPlayers.addLast(currentPlayer);
-         currentPlayer = allPlayers.getFirst();
+         currentPlayer = activePlayers.removeFirst(); //should already be first if nothing unpredicted has happened
+         activePlayers.addLast(currentPlayer);
+         currentPlayer = activePlayers.getFirst();
          
       } else {
-         currentPlayer = allPlayers.removeLast();
-         allPlayers.addFirst(currentPlayer);
+         currentPlayer = activePlayers.removeLast();
+         activePlayers.addFirst(currentPlayer);
       }
       return currentPlayer;
    }
@@ -99,18 +102,28 @@ public class PlayerHandler {
    public void addPlayer(int playerID, boolean isBot, Socket connectionSocket, ObjectInputStream inFromClient,
          ObjectOutputStream outToClient) {
       
-      allPlayers.add(new Player(playerID, isBot, connectionSocket, inFromClient, outToClient));    
+      activePlayers.add(new Player(playerID, isBot, connectionSocket, inFromClient, outToClient));    
    }
 
    public Player getPlayer(int playerID) throws PlayerNotFoundException{
-      for (Player p : allPlayers) {
+      for (Player p : activePlayers) {
          if(p.getPlayerID() == playerID) return p;
       }
       throw new PlayerNotFoundException("Player with playerID "+ playerID +" not found in PlayerHandler");
    }
 
    public LinkedList<Player> getAllPlayers(){
-      return allPlayers;
+      LinkedList<Player>returnList = new LinkedList<Player>(activePlayers);//.addAll(explodedPlayers);
+      returnList.addAll(explodedPlayers);
+      return returnList;
+   }
+
+   public LinkedList<Player> getActivePlayers(){
+      return activePlayers;
+   }
+
+   public LinkedList<Player> getExplodedPlayers(){
+      return explodedPlayers;
    }
    
    public Player getCurrentPlayer() {
@@ -135,5 +148,16 @@ public class PlayerHandler {
 
    public boolean OngoingAttack() {
       return ongoingAttack;
+   }
+
+   /**
+    * remove player from the game and return the players hand
+    * @param player - player to explode
+    * @return the players hand
+    */
+   public LinkedList<Card> explodePlayer(Player player) {
+      activePlayers.remove(player);
+      explodedPlayers.add(player);
+      return player.emptyHand();
    }
 }

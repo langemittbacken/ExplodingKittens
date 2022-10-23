@@ -54,4 +54,8 @@ public class DeckHandler {
     public void shuffleDeck() {
         deck.shuffleDeck();
     }
+
+    public int getPlaydeckSize() {
+        return deck.deckSize();
+    }
 }

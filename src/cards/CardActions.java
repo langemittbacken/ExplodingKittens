@@ -4,6 +4,7 @@ import players.Player;
 import players.PlayerHandler;
 import server.Server;
 import decks.DeckHandler;
+import exceptions.CardNotFoundException;
 
 /**
  * this class contains all the actions 
@@ -37,38 +38,42 @@ public class CardActions {
         }
     }
 
-    public static void explodeCurrentPlayer(boolean defuseable, Card card) {
+    public static void explodeCurrentPlayer(boolean defuseable, Card kitten) {
         Player player = PlayerHandler.getInstance().getCurrentPlayer();
         server.sendMsgToAllPlayers("A Kitten was activated! by Player " + player.getPlayerID());
 
         if(!defuseable || !player.hasDefuse()) {
-          playerHandler.explodePlayer(player);
+          deckHandler.toDiscardPile(playerHandler.explodePlayer(player));
           server.sendMsgToAllPlayers("The Kitten has exploded Player " + player.getPlayerID());
           return;
         }
 
-        deckHandler.toDiscardPile(player.takeDefuse()); 
+        try {
+            deckHandler.toDiscardPile(player.takeDefuse()); } catch (CardNotFoundException e1) {e1.printStackTrace();
+        } 
+
         int deckSize = deckHandler.getPlaydeckSize();
 
         server.sendMessage(player, "The Kitten has been defused");
 
         String readMsg = "";
-        int i = -1;
-        while (i<0 || i>deckSize) {
+        int pos = -1;
+        while (pos<0 || pos>deckSize) {
             server.sendMessage(player, "*options* playdeck has " + deckSize + " cards, choose where to send the Kitten (0-" + (deckSize) + ")\n" 
             +"0 is before first card and " + deckSize + " is after last card\n");
 
             readMsg = server.readMessage(player, false);
             try {
-                i = Integer.parseInt(readMsg);
+                pos = Integer.parseInt(readMsg);
 
             } catch (Exception e) {
                 server.sendMessage(player, "invalid input");
             }
         }
-
-        //--------------------------INSERT KITTEN BACK IN DECK-----------------------------------------------------------------------
-
+        
+        try {
+            deckHandler.insertCardInDeck(pos, player.takeCardFromHand(kitten)); } catch (CardNotFoundException e) {e.printStackTrace();
+        }
     }
 
 }

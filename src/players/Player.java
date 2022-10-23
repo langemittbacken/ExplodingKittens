@@ -3,6 +3,7 @@ package players;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.LinkedList;
 
 import cards.Card;
 import exceptions.CardNotFoundException;
@@ -47,6 +48,10 @@ public class Player{
       
    }
 
+   public Card takeCardFromHand(Card card) throws CardNotFoundException {
+      return hand.takeCard(card);
+   }
+
    public String printHand() {
       return hand.handToString();
    }
@@ -77,7 +82,20 @@ public class Player{
 
    public boolean isOnline(){
       return online;
-      
    }
+
+   public boolean hasDefuse() {
+      return hand.hasCard("Defuse");
+   }
+
+   public Card takeDefuse() throws CardNotFoundException {
+         return hand.takeCard("Defuse");
+   }
+
+   public LinkedList<Card> emptyHand() {
+      return hand.emptyHand();
+   }
+
+   
 
 }

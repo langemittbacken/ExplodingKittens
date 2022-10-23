@@ -1,7 +1,7 @@
 package players;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 
 import cards.Card;
 import exceptions.CardNotFoundException;
@@ -12,22 +12,31 @@ import exceptions.CardNotFoundException;
  *
  */
 public class PlayerHand {
-   private ArrayList<Card> hand;
+   private LinkedList<Card> hand;
    protected boolean blind;
    
    public PlayerHand() {
-      this.hand = new ArrayList<Card>(); 
+      this.hand = new LinkedList<Card>(); 
       blind = false;
    }
    
-   public Card getCard(Card card) throws CardNotFoundException {
+   public Card takeCard(Card card) throws CardNotFoundException {
       
       if(hand.contains(card)) {
-         return hand.get(hand.indexOf(card));
+         return hand.remove(hand.indexOf(card));
          
       } else {
          throw new CardNotFoundException("Unable to find the card "+ card.getName());
       } 
+   }
+
+   public boolean hasCard(String cardName) {
+      for(Card card : hand){
+         if (cardName.equalsIgnoreCase(card.getName())){
+            return true;
+         }
+      }
+      return false;
    }
    
    public String handToString() {
@@ -71,15 +80,22 @@ public class PlayerHand {
       return hand.remove(index);
    }
 
-public Card takeCard(String cardNameOrIndex) throws CardNotFoundException {
-    
-   for (Card card : hand) {
-      if (card.getName().equalsIgnoreCase(cardNameOrIndex)){
-         hand.remove(card);
-         return card;
+   public Card takeCard(String cardNameOrIndex) throws CardNotFoundException {
+      
+      for (Card card : hand) {
+         if (card.getName().equalsIgnoreCase(cardNameOrIndex)){
+            hand.remove(card);
+            return card;
+         }
       }
+      throw new CardNotFoundException(cardNameOrIndex);
    }
-   throw new CardNotFoundException(cardNameOrIndex);
-}
 
+   public LinkedList<Card> emptyHand() {
+      LinkedList<Card> temporary = hand;
+      hand = new LinkedList<Card>();
+      return temporary;
+      }
+
+   
 }

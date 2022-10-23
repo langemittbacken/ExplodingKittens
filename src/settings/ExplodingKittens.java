@@ -54,12 +54,12 @@ public class ExplodingKittens extends Gamemode{
       @Override
    public void dealCards() {
 
-      for(Player player : playerHandler.getAllPlayers()) {
+      for(Player player : playerHandler.getActivePlayers()) {
          player.addCardToHand(new Defuse());
       }
 
       for(int i = 1; i < STARTING_CARDS_ON_HAND; i++){
-         for(Player player : playerHandler.getAllPlayers()) {
+         for(Player player : playerHandler.getActivePlayers()) {
             player.addCardToHand(deckHandler.drawCard());
          }
       }

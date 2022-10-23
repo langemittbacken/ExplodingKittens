@@ -50,7 +50,7 @@ public class GameHandler {
 
       while(true) {
          gameLoop();
-         if(playerHandler.getAllPlayers().size() == 1){
+         if(playerHandler.getActivePlayers().size() == 1){
             break;
          }
       }
@@ -116,11 +116,11 @@ public class GameHandler {
  * @param deckHandler - just to make sure deckHandler is present
  */
    public void testSetupDeckAndPlayerHands(PlayerHandler pHandler, DeckHandler deckHandler) {
-      setupDeckAndPlayerHands(playerHandler.getAllPlayers().size());
+      setupDeckAndPlayerHands(playerHandler.getActivePlayers().size());
    }
    
    private void sendHandToPlayers() {
-      for(Player p : playerHandler.getAllPlayers()){
+      for(Player p : playerHandler.getActivePlayers()){
          sendHandToPlayer(p);
       }
    }

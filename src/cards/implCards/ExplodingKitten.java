@@ -11,7 +11,6 @@ public class ExplodingKitten extends Card{
 
     @Override
     public void onPlayingCard() {
-        // TODO Auto-generated method stub
         
     }
 
