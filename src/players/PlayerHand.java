@@ -38,7 +38,17 @@ public class PlayerHand {
       }
       return false;
    }
-   
+
+   public int countCardsOf(String cardName) {
+      int occurance = 0;
+      for(Card card : hand){
+         if (cardName.equalsIgnoreCase(card.getName())){
+            occurance++;
+         }
+      }
+      return occurance;
+   }
+
    public String handToString() {
       String strHand = "";
 
@@ -84,15 +94,15 @@ public class PlayerHand {
       return hand.remove(index);
    }
 
-   public Card takeCard(String cardNameOrIndex) throws CardNotFoundException {
+   public Card takeCard(String cardName) throws CardNotFoundException {
       
       for (Card card : hand) {
-         if (card.getName().equalsIgnoreCase(cardNameOrIndex)){
+         if (card.getName().equalsIgnoreCase(cardName)){
             hand.remove(card);
             return card;
          }
       }
-      throw new CardNotFoundException(cardNameOrIndex);
+      throw new CardNotFoundException(cardName);
    }
 
    public LinkedList<Card> emptyHand() {
@@ -101,5 +111,6 @@ public class PlayerHand {
       return temporary;
       }
 
+   
    
 }

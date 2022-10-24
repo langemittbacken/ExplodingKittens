@@ -51,6 +51,35 @@ public class Player{
    public Card takeCardFromHand(Card card) throws CardNotFoundException {
       return hand.takeCard(card);
    }
+   
+   /**
+    * take multiple of a single card
+    * @param nrOfCards
+    * @param cardNameOrIndex
+    * @return
+    * @throws CardNotFoundException
+    */
+   public LinkedList<Card> takeCardsFromHand(int nrOfCards, String cardNameOrIndex) throws CardNotFoundException {
+
+      if(!cardMeetsMinimumOccurance(nrOfCards, cardNameOrIndex)){
+         throw new CardNotFoundException(cardNameOrIndex);
+      }
+
+      LinkedList<Card> returnList = new LinkedList<Card>();
+
+      for(int i = 0; i < nrOfCards; i++){
+         returnList.add(takeCardFromHand(cardNameOrIndex));
+      }
+      return returnList;
+   }
+   
+   public boolean cardMeetsMinimumOccurance(int minimum, String action) {
+
+      if(countCardsOf(action) < minimum){
+         return false;
+      }
+      return true;
+   }
 
    public String printHand() {
       return hand.handToString();
@@ -107,6 +136,14 @@ public class Player{
    public Card takeNope() throws CardNotFoundException {
       return hand.takeCard("Nope");
 }
+
+   public int countCardsOf(String cardName) {
+      return hand.countCardsOf(cardName);
+   }
+
+   
+
+   
 
    
 

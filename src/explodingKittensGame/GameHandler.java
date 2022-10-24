@@ -1,12 +1,12 @@
 package explodingKittensGame;
 
+import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import cards.Card;
 import decks.DeckHandler;
-import decks.DiscardPile;
 import exceptions.CardNotFoundException;
 import players.Player;
 import players.PlayerHandler;
@@ -24,10 +24,12 @@ public class GameHandler {
    PlayerHandler playerHandler;
    DeckHandler deckHandler;
 
-   Player currentPlayer;
+   
 
 
     public GameHandler(int nrOfPlayers, int nrOfBots) throws Exception{
+
+      Player currentPlayer = null;
 
       if(GamemodeSettings.getMaxAllowedPlayers()<(nrOfPlayers+nrOfBots) || GamemodeSettings.getMinPlayers()>(nrOfPlayers+nrOfBots)) {
          throw new Exception("between "+ GamemodeSettings.getMinPlayers() +" and "+ GamemodeSettings.getMaxAllowedPlayers() +" players allowed for current gamemode settings");
@@ -52,7 +54,7 @@ public class GameHandler {
       sendGameStartedMessage();
 
       while(true) {
-         gameLoop();
+         gameLoop(currentPlayer);
          if(playerHandler.getActivePlayers().size() == 1){
             break;
          }
@@ -60,9 +62,9 @@ public class GameHandler {
       server.sendMsgToAllPlayers("Player " + playerHandler.getAllPlayers().getFirst().getPlayerID() + " Won!\n");
     }
 
-   private void gameLoop() {
+   private void gameLoop(Player currentPlayer) {
       String action;
-      Card card;
+      
 
       if(currentPlayer != playerHandler.getCurrentPlayer()) {
          currentPlayer = playerHandler.getCurrentPlayer();
@@ -74,49 +76,17 @@ public class GameHandler {
       
       //playing 2 cards
       if(action.length() > 2 && action.substring(0, 2).equalsIgnoreCase("2x")){
-         server.sendMessage(currentPlayer, "Sorry but 2x is yet to be implemented");
-         //TO-DO ----------------------------------------------------------------------------
+         playTwoCardCombo(action.substring(2).trim());
          return;
       }
       //playing 3 cards
       if(action.length() > 2 && action.substring(0, 2).equalsIgnoreCase("3x")){
-         server.sendMessage(currentPlayer, "Sorry but 3x is yet to be implemented");
-         //TO-DO ----------------------------------------------------------------------------
+         playThreeCardCombo(action.substring(2).trim());
          return;
       }
 
       if(!action.equalsIgnoreCase("pass")){
-         try {
-            card = currentPlayer.takeCardFromHand(action);
-            if(card.isComboCard()){
-               server.sendMessage(currentPlayer, "[" + card.getName() + "] cannot be played by itself");
-               currentPlayer.addCardToHand(card);
-               return;
-            }
-
-            server.sendMsgToAllPlayers("Player " + currentPlayer.getPlayerID() + " played [" + card.getName() + "]");
-            
-            
-
-            
-
-         } catch (Exception e) {
-            server.sendMessage(currentPlayer, "could not handle your action \"" + action + "\"");
-            return;
-         }
-         
- 
-         try {
-            if(card.isNopeable() && askforPlayersforNope(currentPlayer, card)){
-               deckHandler.toDiscardPile(card);
-            } else {
-               deckHandler.playCard(card);
-            }
-         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-         }
-
+         playCard(currentPlayer, action);
          return;
       }
 
@@ -126,6 +96,10 @@ public class GameHandler {
       
       playerHandler.nextTurn();
    }
+
+   
+
+   
 
    
 
@@ -180,12 +154,89 @@ public class GameHandler {
 
    }
    
+   private void playTwoCardCombo(Player currentPlayer, String cardNameOrIndex) throws CardNotFoundException {
+      int nrOfCards = 2;
+
+      playCardCombo(nrOfCards, currentPlayer, cardNameOrIndex);
+
+      try {
+         if(askPlayersforNope()){
+            return;
+         }
+      } catch (InterruptedException e) {
+         e.printStackTrace();
+      }
+
+      
+
+      //deckHandler.toDiscardPile(null);
+
+   }
+
+   
+
+   private void playThreeCardCombo(Player currentPlayer, String cardNameOrIndex) throws CardNotFoundException {
+      int nrOfCards = 3;
+
+      playCardCombo(nrOfCards, currentPlayer, cardNameOrIndex);
+      
+      try {
+         if(askPlayersforNope()){
+            return;
+         }
+      } catch (InterruptedException e) {
+         e.printStackTrace();
+      }
+
+
+   }
+
+   private void playCardCombo(int nrOfCards, Player currentPlayer, String cardNameOrIndex) throws CardNotFoundException {
+      
+
+      if (!currentPlayer.cardMeetsMinimumOccurance(nrOfCards, cardNameOrIndex)){
+         throw new CardNotFoundException("your input \"" + cardNameOrIndex +"\" was only found " + currentPlayer.countCardsOf(cardNameOrIndex) + " time(s)");
+      }
+
+      LinkedList<Card> combo = currentPlayer.takeCardsFromHand(nrOfCards, cardNameOrIndex);
+      deckHandler.toDiscardPile(combo);
+
+   }
+
+   private void playCard(Player currentPlayer, String action) {
+      Card card;
+      try {
+         card = currentPlayer.takeCardFromHand(action);
+         if(card.isComboCard()){
+            server.sendMessage(currentPlayer, "[" + card.getName() + "] cannot be played by itself");
+            currentPlayer.addCardToHand(card);
+            return;
+         }
+
+         server.sendMsgToAllPlayers("Player " + currentPlayer.getPlayerID() + " played [" + card.getName() + "]");
+         
+      } catch (CardNotFoundException e) {
+         server.sendMessage(currentPlayer, "could not handle your action \"" + action + "\"");
+         return;
+      }
+      
+      try {
+         if(card.isNopeable() && askPlayersforNope()){
+            deckHandler.toDiscardPile(card);
+         } else {
+            deckHandler.playCard(card);
+         }
+      } catch (InterruptedException e) {
+         e.printStackTrace();
+      }
+   }
+
    /**
     * After an interruptable card is played everyone has playerHandler.getSecondsToInterruptWithNope() seconds to play Nope
     * @return true if nr of nope played is odd, false if even (or none)
     * @throws InterruptedException
     */
-   private boolean askforPlayersforNope(Player currentPlayer, Card card) throws InterruptedException {
+   private boolean askPlayersforNope() throws InterruptedException {
 
 		int nopePlayed = checkNrNope(); 
 		ExecutorService threadpool = Executors.newFixedThreadPool(playerHandler.getActivePlayers().size());
@@ -224,7 +275,7 @@ public class GameHandler {
          
          server.sendMsgToAllPlayers("will someone play another nope?");
 
-			return !askforPlayersforNope(currentPlayer, card);
+			return !askPlayersforNope();
 		}
       return false;
    }
