@@ -113,7 +113,7 @@ public class PlayerHandler {
    }
 
    public LinkedList<Player> getAllPlayers(){
-      LinkedList<Player>returnList = new LinkedList<Player>(activePlayers);//.addAll(explodedPlayers);
+      LinkedList<Player>returnList = new LinkedList<Player>(activePlayers);
       returnList.addAll(explodedPlayers);
       return returnList;
    }
@@ -161,7 +161,25 @@ public class PlayerHandler {
       return player.emptyHand();
    }
 
-   public Player getPlayerFromString(String answer) {
-      //used in cardActions for Favor card----------------------------------------------------------------------------------------------------------------------------
+   /**
+    * this method assumes the argument is looking for the player ID of a player
+    * @param player - either a number ex "0" or "player 0"
+    * @return the player with PlayerID same as argument
+    * @throws PlayerNotFoundException - if argument does not match any player
+    */
+   public Player getActivePlayerFromString(String wantedPlayer) throws PlayerNotFoundException{
+      String player = wantedPlayer.trim();
+
+      if(player.startsWith("player") || player.startsWith("Player")) {
+         player = player.substring("player".length()).trim();
+      }
+      try {
+         int playerID = Integer.parseInt(player);
+
+         return getPlayer(playerID);
+
+      } catch (Exception e) {
+         throw new PlayerNotFoundException(wantedPlayer + "was invalid input");
+      } 
    }
 }

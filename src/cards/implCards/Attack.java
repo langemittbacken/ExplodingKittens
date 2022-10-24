@@ -24,7 +24,8 @@ public class Attack extends Card{
     }
 
     @Override
-    public void onDrawingCard() {     
+    public void onDrawingCard() {   
+        CardActions.doNothing();  
     }
     
 }

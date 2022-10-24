@@ -31,8 +31,12 @@ public class DeckHandler {
     }
 
     public void playCard(Card card) {
-        card.onPlayingCard();
         toDiscardPile(card);
+        card.onPlayingCard();
+    }
+
+    public void playMultipleCards(Card card, int multiplier) {
+        erg
     }
 
     public void addCardToDeck(Card card) {
@@ -57,5 +61,21 @@ public class DeckHandler {
 
     public int getPlaydeckSize() {
         return deck.deckSize();
+    }
+
+    public LinkedList<Card> peekDiscardPile(int startPos, int stopPos) {
+        return DiscardPile.peekDeck(startPos, stopPos);
+    }
+
+    public LinkedList<Card> peekDeck(int startPos, int stopPos) {
+        return DiscardPile.peekDeck(startPos, stopPos);
+    }
+
+    public void rearrangePlayDeck(LinkedList<Card> newOrderOnCards, int startPos, int stopPos) throws Exception {
+        DiscardPile.rearrangeDeck(newOrderOnCards, startPos, stopPos);
+    }
+
+    public int getDiscardPileSize() {
+        return DiscardPile.deckSize();
     }
 }

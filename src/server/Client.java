@@ -50,7 +50,7 @@ public class Client {
                         outToServer.writeObject(br.readLine());
                         
                      } else {
-                        outToServer.writeObject(" ");                        
+                        outToServer.writeObject(" ");                    
                      }
 
                 }

@@ -100,6 +100,14 @@ public class Player{
       return hand.nrOfCards();
    }
 
+   public boolean hasNope() {
+      return hand.hasCard("Nope");
+   }
+
+   public Card takeNope() throws CardNotFoundException {
+      return hand.takeCard("Nope");
+}
+
    
 
 }

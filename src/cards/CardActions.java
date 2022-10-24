@@ -4,7 +4,7 @@ import players.Player;
 import players.PlayerHandler;
 import server.Server;
 import decks.DeckHandler;
-import exceptions.CardNotFoundException;
+import exceptions.*;
 
 /**
  * this class contains all the actions 
@@ -86,10 +86,17 @@ public class CardActions {
             } 
         }
         
-        while(attackedPlayer == null){
+        while(attackedPlayer == null || attackedPlayer == currentPlayer){
             server.sendMessage(currentPlayer, "*options* which player do you want a favor from?");
             String answer = server.readMessage(currentPlayer, true);
-            attackedPlayer = playerHandler.getPlayerFromString(answer);
+
+            try {
+                attackedPlayer = playerHandler.getActivePlayerFromString(answer); } catch (PlayerNotFoundException e) {e.printStackTrace();
+            }
+            if(attackedPlayer == currentPlayer){
+                server.sendMessage(currentPlayer, "cannot get a Favor from yourself");
+                continue;
+            }
         }
         
         Card cardFromAttackedPlayer = cardFromAttackedPlayer(attackedPlayer, currentPlayer);
@@ -102,7 +109,7 @@ public class CardActions {
         while(true){
             server.sendMessage(attackedPlayer, attackedPlayer.printHand());
             server.sendMessage(attackedPlayer, "Player " + currentPlayer.getPlayerID() + " asked you for a favor");
-            server.sendMessage(currentPlayer, "*options* pick card to give to Player " + currentPlayer.getPlayerID());
+            server.sendMessage(attackedPlayer, "*options* pick card to give to Player " + currentPlayer.getPlayerID());
             String favorCard = server.readMessage(attackedPlayer, true);
         
             try {
@@ -114,4 +121,23 @@ public class CardActions {
             }   
         }
     }
+
+    public static void doNothing(){
+    }
+
+    // public static void nopeACard() {
+    //     int nopesInARow=0;
+
+    //     for(int i = 0; i< deckHandler.getDiscardPileSize(); i++) {
+    //         if(deckHandler.peekDiscardPile(i, i+1).getFirst().getName().equals("Nope")) {
+    //             nopesInARow++;
+    //         } else {
+    //             break;
+    //         }
+    //     }
+    //     if(nopesInARow %2 == 0){
+    //         deckHandler.peekDiscardPile(nopesInARow, nopesInARow+1).getFirst().onPlayingCard();
+    //     } //else do nothing, since the card has been noped
+
+    // }
 }

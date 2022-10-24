@@ -16,6 +16,7 @@ public class Favor extends Card{
 
     @Override
     public void onDrawingCard() { 
+        CardActions.doNothing();
     }
     
 }

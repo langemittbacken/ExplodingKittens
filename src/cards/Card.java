@@ -8,8 +8,8 @@ package cards;
  */
 public abstract class Card {
    protected String cardName;
-   protected boolean Nopeable;
-   protected boolean PlainCard;
+   protected boolean nopeable;
+   protected boolean comboCard; //can not be played by itself, this includes defuse, plainCards and nopes for example
    protected boolean defuseable;
    
    /**
@@ -22,10 +22,10 @@ public abstract class Card {
     */
    public abstract void onDrawingCard();
 
-   public Card(String cardName, boolean Nopeable, boolean PlainCard, boolean defuseable){
+   public Card(String cardName, boolean Nopeable, boolean comboCard, boolean defuseable){
       this.cardName = cardName;
-      this.Nopeable = Nopeable;
-      this.PlainCard = PlainCard;
+      this.nopeable = Nopeable;
+      this.comboCard = comboCard;
       this.defuseable = defuseable;
    }
 
@@ -34,11 +34,11 @@ public abstract class Card {
    }
    
    public boolean isNopeable() {
-      return Nopeable;
+      return nopeable;
    }
    
-   public boolean isPlainCard() {
-      return PlainCard;
+   public boolean isComboCard() {
+      return comboCard;
    }
 
    public boolean isDefusable() {

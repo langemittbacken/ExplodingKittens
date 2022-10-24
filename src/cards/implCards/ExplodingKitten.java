@@ -6,12 +6,12 @@ import cards.CardActions;
 public class ExplodingKitten extends Card{
 
     public ExplodingKitten() {
-        super("Exploding Kitten", false, false, true);
+        super("Exploding Kitten", false, true, true);
     }
 
     @Override
     public void onPlayingCard() {
-        
+        CardActions.doNothing();
     }
 
     @Override
