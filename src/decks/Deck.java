@@ -44,13 +44,22 @@ public class Deck {
     /**
      * return, but does not remove, and in order, all cards from including startPos
      * upto, but excluding, stopPos in the deck
-     * @param startPos inclusive
-     * @param stopPos exclusive, must be less than size of deck
+     * @param startPos inclusive, >=0, if larger than size of deck, empty list returned
+     * @param stopPos exclusive, can be larger than size of deck, then stops at end of deck
      * @return (stopPos-startPos) nr of cards in a LinkedList (in order)
      */
     public LinkedList<Card> peekDeck(int startPos, int stopPos) {
         LinkedList<Card> peekCards = new LinkedList<Card>();
-        for(int i = startPos; i < stopPos; i++){
+
+        if(startPos >= theDeck.size()){
+            return peekCards;
+        }
+
+        if(stopPos > theDeck.size()){
+            stopPos = theDeck.size();
+        }
+
+        for(int i = startPos; i < stopPos && i< theDeck.size(); i++){
             peekCards.add(theDeck.get(i));
         }
         return peekCards;

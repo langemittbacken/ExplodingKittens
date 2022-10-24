@@ -1,7 +1,5 @@
 package settings;
 
-import java.util.LinkedList;
-
 import cards.implCards.*;
 import players.Player;
 

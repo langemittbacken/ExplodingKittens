@@ -35,10 +35,6 @@ public class DeckHandler {
         card.onPlayingCard();
     }
 
-    public void playMultipleCards(Card card, int multiplier) {
-        erg
-    }
-
     public void addCardToDeck(Card card) {
         deck.addCard(card);
     }
@@ -68,7 +64,7 @@ public class DeckHandler {
     }
 
     public LinkedList<Card> peekDeck(int startPos, int stopPos) {
-        return DiscardPile.peekDeck(startPos, stopPos);
+        return deck.peekDeck(startPos, stopPos);
     }
 
     public void rearrangePlayDeck(LinkedList<Card> newOrderOnCards, int startPos, int stopPos) throws Exception {

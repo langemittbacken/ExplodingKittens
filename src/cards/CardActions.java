@@ -113,7 +113,9 @@ public class CardActions {
             String favorCard = server.readMessage(attackedPlayer, true);
         
             try {
-                return attackedPlayer.takeCardFromHand(favorCard);
+                Card favor = attackedPlayer.takeCardFromHand(favorCard);
+                server.sendMessage(attackedPlayer, "sent [" + favor.getName() + "] to Player " + currentPlayer.getPlayerID());
+                return favor;
 
             } catch (Exception e) {
                 server.sendMessage(attackedPlayer, "invalid input");
@@ -125,19 +127,24 @@ public class CardActions {
     public static void doNothing(){
     }
 
-    // public static void nopeACard() {
-    //     int nopesInARow=0;
+    public static void SeeTheFuture(int cardsToPeek) {
+        Player currentPlayer = playerHandler.getCurrentPlayer();
+        server.sendMessage(currentPlayer, "_______________________________________________");
+        server.sendMessage(currentPlayer, "the top " + cardsToPeek + " card(s) out of " + deckHandler.getPlaydeckSize() + " cards in playdeck");
 
-    //     for(int i = 0; i< deckHandler.getDiscardPileSize(); i++) {
-    //         if(deckHandler.peekDiscardPile(i, i+1).getFirst().getName().equals("Nope")) {
-    //             nopesInARow++;
-    //         } else {
-    //             break;
-    //         }
-    //     }
-    //     if(nopesInARow %2 == 0){
-    //         deckHandler.peekDiscardPile(nopesInARow, nopesInARow+1).getFirst().onPlayingCard();
-    //     } //else do nothing, since the card has been noped
+        int pos = 0;
+        for(Card c : deckHandler.peekDeck(0, cardsToPeek)){
+            server.sendMessage(currentPlayer, "[" + pos +"] [" + c.getName() + "]");
+            pos++;
+        }
+        server.sendMessage(currentPlayer, "_______________________________________________");
+    }
 
-    // }
+    public static void shuffleDeck() {
+        deckHandler.shuffleDeck();
+    }
+
+    public static void skipTurn() {
+        playerHandler.nextTurn();
+    }
 }

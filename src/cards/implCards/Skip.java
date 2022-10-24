@@ -1,18 +1,17 @@
 package cards.implCards;
 
 import cards.Card;
+import cards.CardActions;
 
 public class Skip extends Card {
 
     public Skip() {
         super("Skip", true, false, false);
-        //TODO Auto-generated constructor stub
     }
 
     @Override
     public void onPlayingCard() {
-        // TODO Auto-generated method stub
-        
+        CardActions.skipTurn();
     }
 
     @Override

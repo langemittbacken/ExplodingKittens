@@ -1,9 +1,12 @@
 package explodingKittensGame;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import cards.Card;
 import decks.DeckHandler;
+import decks.DiscardPile;
 import exceptions.CardNotFoundException;
 import players.Player;
 import players.PlayerHandler;
@@ -87,23 +90,33 @@ public class GameHandler {
             card = currentPlayer.takeCardFromHand(action);
             if(card.isComboCard()){
                server.sendMessage(currentPlayer, "[" + card.getName() + "] cannot be played by itself");
+               currentPlayer.addCardToHand(card);
                return;
             }
 
             server.sendMsgToAllPlayers("Player " + currentPlayer.getPlayerID() + " played [" + card.getName() + "]");
             
-            if(card.isNopeable() && anyPlayerPlayedANope()){
-               deckHandler.toDiscardPile(card);
-            } else {
-               deckHandler.playCard(card);
-            }
+            
+
             
 
          } catch (Exception e) {
             server.sendMessage(currentPlayer, "could not handle your action \"" + action + "\"");
+            return;
+         }
+         
+ 
+         try {
+            if(card.isNopeable() && askforPlayersforNope(currentPlayer, card)){
+               deckHandler.toDiscardPile(card);
+            } else {
+               deckHandler.playCard(card);
+            }
+         } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
          }
 
-         
          return;
       }
 
@@ -114,42 +127,7 @@ public class GameHandler {
       playerHandler.nextTurn();
    }
 
-   private boolean anyPlayerPlayedANope() {
-      		//After an interruptable card is played everyone has 5 seconds to play Nope
-		int nopePlayed = checkNrNope();
-		ExecutorService threadpool = Executors.newFixedThreadPool(players.size());
-		for(Player p : players) {
-			p.sendMessage("Action: Player " + currentPlayer.playerID + " played " + card);
-			if(p.hand.contains(Card.Nope)) { //only give the option to interrupt to those who have a Nope card
-				p.sendMessage("Press <Enter> to play Nope");
-				Runnable task = new Runnable() {
-		        	@Override
-		        	public void run() {
-	        			try {
-			        		String nextMessage = p.readMessage(true); //Read that is interrupted after secondsToInterruptWithNope
-			        		if(!nextMessage.equals(" ") && p.hand.contains(Card.Nope)) {
-		    	    			p.hand.remove(Card.Nope);
-		    	    			discard.add(0, Card.Nope);
-		    	    			for(Player notify: players)
-		    	    				notify.sendMessage("Player " + p.playerID + " played Nope");
-			        		}
-	        			} catch(Exception e) {
-	        				System.out.println("addToDiscardPile: " +e.getMessage());
-	        			}
-	        		}
-	        	};
-            	threadpool.execute(task);
-			}
-		}
-		threadpool.awaitTermination((secondsToInterruptWithNope*1000)+500, TimeUnit.MILLISECONDS); //add an additional delay to avoid concurrancy problems with the ObjectInputStream
-		for(Player notify: players)
-			notify.sendMessage("The timewindow to play Nope passed");
-		if(checkNrNope()>nopePlayed) {
-			for(Player notify: players)
-				notify.sendMessage("Play another Nope? (alternate between Nope and Yup)");
-			addToDiscardPile(currentPlayer, card);
-		}
-   }
+   
 
    private void setupDeckAndPlayerHands(int totalPlayers) {
 
@@ -200,5 +178,70 @@ public class GameHandler {
 
       return server.readMessage(currentPlayer, true);
 
+   }
+   
+   /**
+    * After an interruptable card is played everyone has playerHandler.getSecondsToInterruptWithNope() seconds to play Nope
+    * @return true if nr of nope played is odd, false if even (or none)
+    * @throws InterruptedException
+    */
+   private boolean askforPlayersforNope(Player currentPlayer, Card card) throws InterruptedException {
+
+		int nopePlayed = checkNrNope(); 
+		ExecutorService threadpool = Executors.newFixedThreadPool(playerHandler.getActivePlayers().size());
+
+		for(Player p : playerHandler.getActivePlayers()) {
+			
+			if(p.hasNope()) { //only give the option to interrupt to those who have a Nope card
+				server.sendMessage(p, "Press <Enter> to play [Nope]");
+
+				Runnable task = new Runnable() {
+		        	@Override
+		        	public void run() {
+
+	        			try {
+			        		String nextMessage = server.readMessage(p, true); //Read that is interrupted after secondsToInterruptWithNope
+
+			        		if(!nextMessage.equals(" ") && p.hasNope()) {
+		    	    			
+		    	    			deckHandler.toDiscardPile(p.takeNope());
+
+                        server.sendMsgToAllPlayers("Player " + p.getPlayerID() + " played Nope");
+			        		}
+	        			} catch(Exception e) {
+	        				System.out.println("addToDiscardPile: " +e.getMessage());
+	        			}
+	        		}
+	        	};
+            threadpool.execute(task);
+			}
+		}
+      threadpool.awaitTermination( (PlayerHandler.getSecondsToInterruptWithNope() * 1000) + 500, TimeUnit.MILLISECONDS);//add an additional delay to avoid concurrancy problems with the ObjectInputStream
+		
+      server.sendMsgToAllPlayers("The timewindow to play Nope passed");
+
+		if(checkNrNope()>nopePlayed) {
+         
+         server.sendMsgToAllPlayers("will someone play another nope?");
+
+			return !askforPlayersforNope(currentPlayer, card);
+		}
+      return false;
+   }
+
+   private int checkNrNope() {
+
+      int nopesInARow = 0;
+      for(int i = 0; i< deckHandler.getDiscardPileSize(); i++) {
+         if(deckHandler.peekDiscardPile(i, i+1).getFirst().getName().equals("Nope")) {
+            nopesInARow++;
+
+         } else {
+
+            return nopesInARow;
+         }
+      }
+
+      return nopesInARow;
    }
 }
