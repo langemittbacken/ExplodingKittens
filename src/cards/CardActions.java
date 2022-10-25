@@ -78,15 +78,11 @@ public class CardActions {
 
     public static void askForFavor() {
         Player currentPlayer = playerHandler.getCurrentPlayer();
-        Player attackedPlayer = null;
+        Player attackedPlayer = currentPlayer;
 
-        for(Player player : playerHandler.getActivePlayers()){
-            if(player != currentPlayer){
-                server.sendMessage(playerHandler.getCurrentPlayer(), "Player " + player.getPlayerID() + " has " + player.nrOfCardsInHand() + " cards");
-            } 
-        }
+        printAllOthersPlayersHandSize(currentPlayer);
         
-        while(attackedPlayer == null || attackedPlayer == currentPlayer){
+        while(attackedPlayer == currentPlayer){
             server.sendMessage(currentPlayer, "*options* which player do you want a favor from?");
             String answer = server.readMessage(currentPlayer, true);
 
@@ -103,6 +99,14 @@ public class CardActions {
 
         currentPlayer.addCardToHand(cardFromAttackedPlayer);
         server.sendMessage(currentPlayer, "recieved [" + cardFromAttackedPlayer.getName() + "] from Player " + attackedPlayer.getPlayerID());
+    }
+
+    private static void printAllOthersPlayersHandSize(Player currentPlayer) {
+        for(Player player : playerHandler.getActivePlayers()){
+            if(player != currentPlayer){
+                server.sendMessage(playerHandler.getCurrentPlayer(), "Player " + player.getPlayerID() + " has " + player.nrOfCardsInHand() + " cards");
+            } 
+        }
     }
 
     private static Card cardFromAttackedPlayer(Player attackedPlayer, Player currentPlayer) {
@@ -146,5 +150,31 @@ public class CardActions {
 
     public static void skipTurn() {
         playerHandler.nextTurn();
+    }
+
+    public static void stealCardFromPlayer() {
+        Player currentPlayer = playerHandler.getCurrentPlayer();
+        Player attackedPlayer = currentPlayer;
+
+        printAllOthersPlayersHandSize(currentPlayer);
+
+        while(attackedPlayer == currentPlayer){
+            server.sendMessage(currentPlayer, "*options* which player do you want to steal a card from?");
+            String answer = server.readMessage(currentPlayer, true);
+
+            try {
+                attackedPlayer = playerHandler.getActivePlayerFromString(answer); } catch (PlayerNotFoundException e) {e.printStackTrace();
+            }
+            if(attackedPlayer == currentPlayer){
+                server.sendMessage(currentPlayer, "cannot steal a card from yourself");
+                continue;
+            }
+        }
+
+        //GET THE CARD HERE MAYBE LOOK AT FAVOR SINCE THEY ARE SIMILIAR___________________________________________________________________________________
+
+    }
+
+    public static void askForCardFromPlayer() {
     }
 }

@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import cards.Card;
+import cards.CardActions;
 import decks.DeckHandler;
 import exceptions.CardNotFoundException;
 import players.Player;
@@ -160,6 +161,7 @@ public class GameHandler {
       playCardCombo(nrOfCards, currentPlayer, cardNameOrIndex);
 
       try {
+
          if(askPlayersforNope()){
             return;
          }
@@ -167,10 +169,7 @@ public class GameHandler {
          e.printStackTrace();
       }
 
-      
-
-      //deckHandler.toDiscardPile(null);
-
+      CardActions.stealCardFromPlayer();
    }
 
    
@@ -188,6 +187,7 @@ public class GameHandler {
          e.printStackTrace();
       }
 
+      CardActions.askForCardFromPlayer();
 
    }
 
