@@ -7,7 +7,7 @@ public class SeeTheFuture extends Card{
 
     private int cardsToSee = 3;
     public SeeTheFuture() {
-        super("See the Future", true, false, false);
+        super("See The Future", true, false, false);
     }
 
     @Override

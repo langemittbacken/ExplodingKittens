@@ -11,8 +11,8 @@ import players.PlayerHandler;
  */
 public abstract class Gamemode {
 
-   protected DeckHandler deckHandler = DeckHandler.getInstance();
-   protected PlayerHandler playerHandler = PlayerHandler.getInstance();
+   protected static DeckHandler deckHandler = DeckHandler.getInstance();
+   protected static PlayerHandler playerHandler = PlayerHandler.getInstance();
 
    public abstract void setupCardsBeforeDealingHands(int nrOfPlayers);
    public abstract void dealCards();

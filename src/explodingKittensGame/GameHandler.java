@@ -25,12 +25,15 @@ public class GameHandler {
    PlayerHandler playerHandler;
    DeckHandler deckHandler;
 
-   
+   int nrOfPlayers;
+   int nrOfBots;
 
 
     public GameHandler(int nrOfPlayers, int nrOfBots) throws Exception{
 
-      Player currentPlayer = null;
+      this.nrOfPlayers = nrOfPlayers;
+      this.nrOfBots = nrOfBots;
+      
 
       if(GamemodeSettings.getMaxAllowedPlayers()<(nrOfPlayers+nrOfBots) || GamemodeSettings.getMinPlayers()>(nrOfPlayers+nrOfBots)) {
          throw new Exception("between "+ GamemodeSettings.getMinPlayers() +" and "+ GamemodeSettings.getMaxAllowedPlayers() +" players allowed for current gamemode settings");
@@ -47,6 +50,11 @@ public class GameHandler {
       playerHandler = PlayerHandler.getInstance();
       deckHandler = DeckHandler.getInstance();
 
+    }  
+
+    public void startGame() {
+
+      Player currentPlayer = null;
       setupDeckAndPlayerHands(nrOfPlayers+nrOfBots);
 
       sendHandToPlayers();
@@ -62,6 +70,7 @@ public class GameHandler {
       }
       server.sendMsgToAllPlayers("Player " + playerHandler.getAllPlayers().getFirst().getPlayerID() + " Won!\n");
     }
+    
 
    private void gameLoop(Player currentPlayer) {
       String action;
@@ -121,15 +130,6 @@ public class GameHandler {
       GamemodeSettings.dealCards();
       GamemodeSettings.finalizeSetup(totalPlayers);
       deckHandler.shuffleDeck();
-   }
-   
-/**
- * only for JUnit testing, should not be used!
- * @param pHandler - just to make sure playerhandler is present
- * @param deckHandler - just to make sure deckHandler is present
- */
-   public void testSetupDeckAndPlayerHands(PlayerHandler pHandler, DeckHandler deckHandler) {
-      setupDeckAndPlayerHands(playerHandler.getActivePlayers().size());
    }
    
    private void sendHandToPlayers() {

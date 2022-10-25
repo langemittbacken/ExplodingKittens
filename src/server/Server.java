@@ -35,29 +35,29 @@ public class Server {
         this.playerHandler = PlayerHandler.getInstance();
         
         //this code will print the servers ip so the one starting the server can distribute it.
-        String ip;
-        try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
-                NetworkInterface iface = interfaces.nextElement();
-                // filters out 127.0.0.1 and inactive interfaces
-                if (iface.isLoopback() || !iface.isUp())
-                    continue;
+        // String ip;
+        // try {
+        //     Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        //     while (interfaces.hasMoreElements()) {
+        //         NetworkInterface iface = interfaces.nextElement();
+        //         // filters out 127.0.0.1 and inactive interfaces
+        //         if (iface.isLoopback() || !iface.isUp())
+        //             continue;
 
-                Enumeration<InetAddress> addresses = iface.getInetAddresses();
-                while(addresses.hasMoreElements()) {
-                    InetAddress addr = addresses.nextElement();
-                    ip = addr.getHostAddress();
-                    System.out.println(iface.getDisplayName() + " " + ip);
-                }
-            }
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        }
+        //         Enumeration<InetAddress> addresses = iface.getInetAddresses();
+        //         while(addresses.hasMoreElements()) {
+        //             InetAddress addr = addresses.nextElement();
+        //             ip = addr.getHostAddress();
+        //             System.out.println(iface.getDisplayName() + " " + ip);
+        //         }
+        //     }
+        // } catch (SocketException e) {
+        //     throw new RuntimeException(e);
+        // }
         
         //Open for connections if there are online players
         for(int i=0; i<numberOfBots; i++) {
-            playerHandler.addPlayer(i+1, true, null, null, null); //add a bot    
+            playerHandler.addPlayer(i, true, null, null, null); //add a bot    
         }
         
         if(numberPlayers>0)
@@ -78,7 +78,7 @@ public class Server {
 
     public static void startInstance(int nrOfPlayers, int nrOfBots) throws Exception {
         if (instance == null) {
-                    instance = new Server(nrOfPlayers, nrOfBots);
+            instance = new Server(nrOfPlayers, nrOfBots);
         }
     }
 

@@ -7,7 +7,7 @@ package settings;
  */
 public class GamemodeSettings {
    private static boolean basegame = true;
-   private static int minPlayers = 2;
+   protected static int minPlayers = 2;
    private static int maxAllowedPlayers = 5;
 
    private static boolean includeImplodingKittens = false;
