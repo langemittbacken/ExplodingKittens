@@ -59,23 +59,28 @@ public class Player{
     * @return
     * @throws CardNotFoundException
     */
-   public LinkedList<Card> takeCardsFromHand(int nrOfCards, String cardNameOrIndex) throws CardNotFoundException {
+   public LinkedList<Card> takeCardsFromHand(int nrOfCards, String cardName) throws CardNotFoundException {
 
-      if(!cardMeetsMinimumOccurance(nrOfCards, cardNameOrIndex)){
-         throw new CardNotFoundException(cardNameOrIndex);
+      if(!cardMeetsMinimumOccurance(nrOfCards, cardName)){
+         throw new CardNotFoundException(cardName);
       }
 
       LinkedList<Card> returnList = new LinkedList<Card>();
 
       for(int i = 0; i < nrOfCards; i++){
-         returnList.add(takeCardFromHand(cardNameOrIndex));
+         returnList.add(takeCardFromHand(cardName));
       }
       return returnList;
    }
-   
-   public boolean cardMeetsMinimumOccurance(int minimum, String action) {
 
-      if(countCardsOf(action) < minimum){
+   public Card takeRandomCardFromHand() {
+
+      return hand.takeCard((int) (Math.random() * hand.nrOfCards()));
+  }
+   
+   public boolean cardMeetsMinimumOccurance(int minimum, String cardNameOrIndex) {
+
+      if(countCardsOf(cardNameOrIndex) < minimum){
          return false;
       }
       return true;
@@ -117,6 +122,10 @@ public class Player{
       return hand.hasCard("Defuse");
    }
 
+   public boolean hasCard(String cardName) {
+      return hand.hasCard(cardName);
+   }
+
    public Card takeDefuse() throws CardNotFoundException {
          return hand.takeCard("Defuse");
    }
@@ -135,16 +144,25 @@ public class Player{
 
    public Card takeNope() throws CardNotFoundException {
       return hand.takeCard("Nope");
-}
-
-   public int countCardsOf(String cardName) {
-      return hand.countCardsOf(cardName);
    }
 
-   
+   public int countCardsOf(String cardNameOrIndex) {
 
-   
+      String nameOfCard;
+      try {
+         nameOfCard = hand.getCard(Integer.parseInt(cardNameOrIndex)).getName();
 
-   
+         return hand.countCardsOf(nameOfCard);
+
+      } catch (Exception e) {
+         return hand.countCardsOf(cardNameOrIndex);
+      }
+      
+   }
+
+public String getCardName(String index) {
+   return hand.getCard(Integer.parseInt(index)).getName();
+
+}
 
 }

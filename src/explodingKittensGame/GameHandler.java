@@ -77,12 +77,22 @@ public class GameHandler {
       
       //playing 2 cards
       if(action.length() > 2 && action.substring(0, 2).equalsIgnoreCase("2x")){
-         playTwoCardCombo(action.substring(2).trim());
+         try {
+            playTwoCardCombo(currentPlayer, action.substring(2).trim());
+         } catch (CardNotFoundException e) {
+            server.sendMessage(currentPlayer, e.getMessage());
+            return;
+         }
          return;
       }
       //playing 3 cards
       if(action.length() > 2 && action.substring(0, 2).equalsIgnoreCase("3x")){
-         playThreeCardCombo(action.substring(2).trim());
+         try {
+            playThreeCardCombo(currentPlayer, action.substring(2).trim());
+         } catch (CardNotFoundException e) {
+            server.sendMessage(currentPlayer, e.getMessage());
+            return;
+         }
          return;
       }
 
@@ -135,6 +145,13 @@ public class GameHandler {
 
    private void sendGameStartedMessage() {
       server.sendMsgToAllPlayers("Game started!\n");
+      server.sendMsgToAllPlayers("How to play: \n"
+                                 +" type \"pass\" draw a card\n"
+                                 +" type \"cardname\" to play card\n"
+                                 +" type number of the card to play card\n"
+                                 +" type\"2xcardname\" to play a 2 card combo\n"
+                                 +" type \"3xcardname\" to play a 3 card combo\n"
+                                 +" \"2x\" and \"3x\" also works with number of the card \n");
    }
 
    private void sendWhoseTurnItIs(Player currentPlayer) {
@@ -187,20 +204,27 @@ public class GameHandler {
          e.printStackTrace();
       }
 
-      CardActions.askForCardFromPlayer();
+      CardActions.askForSpecifiedCardFromPlayer();
 
    }
 
    private void playCardCombo(int nrOfCards, Player currentPlayer, String cardNameOrIndex) throws CardNotFoundException {
       
+      String cardName = cardNameOrIndex;
 
-      if (!currentPlayer.cardMeetsMinimumOccurance(nrOfCards, cardNameOrIndex)){
-         throw new CardNotFoundException("your input \"" + cardNameOrIndex +"\" was only found " + currentPlayer.countCardsOf(cardNameOrIndex) + " time(s)");
+      try {
+         cardName = currentPlayer.getCardName(cardNameOrIndex); //if an index
+      } catch (Exception e) {
       }
 
-      LinkedList<Card> combo = currentPlayer.takeCardsFromHand(nrOfCards, cardNameOrIndex);
-      deckHandler.toDiscardPile(combo);
+      if (!currentPlayer.cardMeetsMinimumOccurance(nrOfCards, cardName)){
+         throw new CardNotFoundException("your input \"" + cardName +"\" was only found " + currentPlayer.countCardsOf(cardName) + " time(s)");
+      }
 
+      LinkedList<Card> combo = currentPlayer.takeCardsFromHand(nrOfCards, cardName);
+      deckHandler.toDiscardPile(combo);
+      
+      server.sendMsgToAllPlayers("Player " + currentPlayer.getPlayerID() + " played a " + nrOfCards + " cards combo of [" + cardName + "]");
    }
 
    private void playCard(Player currentPlayer, String action) {

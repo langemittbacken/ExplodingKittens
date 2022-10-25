@@ -30,6 +30,10 @@ public class PlayerHand {
       } 
    }
 
+   public Card getCard(int index){
+      return hand.get(index);
+   }
+
    public boolean hasCard(String cardName) {
       for(Card card : hand){
          if (cardName.equalsIgnoreCase(card.getName())){
