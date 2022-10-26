@@ -73,9 +73,13 @@ public class Player{
       return returnList;
    }
 
-   public Card takeRandomCardFromHand() {
+   public Card takeRandomCardFromHand() throws CardNotFoundException {
 
-      return hand.takeCard((int) (Math.random() * hand.nrOfCards()));
+      if(hand.nrOfCards() > 0){
+         return hand.takeCard((int)Math.random() * hand.nrOfCards());
+      }
+      throw new CardNotFoundException(" could not take random card from opponent");
+      
   }
    
    public boolean cardMeetsMinimumOccurance(int minimum, String cardNameOrIndex) {
@@ -160,9 +164,9 @@ public class Player{
       
    }
 
-public String getCardName(String index) {
-   return hand.getCard(Integer.parseInt(index)).getName();
+   public String getCardName(String index) {
+      return hand.getCard(Integer.parseInt(index)).getName();
 
-}
+   }
 
 }

@@ -50,21 +50,25 @@ public class GameHandler {
       playerHandler = PlayerHandler.getInstance();
       deckHandler = DeckHandler.getInstance();
 
-    }  
-
-    public void startGame() {
-
-      Player currentPlayer = null;
+    } 
+    
+    public void doSetup() {
       setupDeckAndPlayerHands(nrOfPlayers+nrOfBots);
 
       sendHandToPlayers();
 
       playerHandler.startTurnOrder(true);
+    }
+
+    public void startGame(boolean continueTheLoop) {
+
+      Player currentPlayer = null;
+      
       sendGameStartedMessage();
 
       while(true) {
          gameLoop(currentPlayer);
-         if(playerHandler.getActivePlayers().size() == 1){
+         if(playerHandler.getActivePlayers().size() == 1 || !continueTheLoop){
             break;
          }
       }
@@ -130,6 +134,14 @@ public class GameHandler {
       GamemodeSettings.dealCards();
       GamemodeSettings.finalizeSetup(totalPlayers);
       deckHandler.shuffleDeck();
+   }
+
+   /**
+    * only for JUnit do not use!
+    * @param pHandler
+    */
+   public void testSetupDeckAndPlayerHands(PlayerHandler pHandler){
+      setupDeckAndPlayerHands(pHandler.getActivePlayers().size());
    }
    
    private void sendHandToPlayers() {

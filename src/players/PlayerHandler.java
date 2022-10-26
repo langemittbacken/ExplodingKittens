@@ -101,8 +101,20 @@ public class PlayerHandler {
 
    public void addPlayer(int playerID, boolean isBot, Socket connectionSocket, ObjectInputStream inFromClient,
          ObjectOutputStream outToClient) {
+      if(isBot){
+         activePlayers.add(new Bot(playerID, isBot, connectionSocket, inFromClient, outToClient));    
+      } else {
+         activePlayers.add(new Player(playerID, isBot, connectionSocket, inFromClient, outToClient));    
+      }
       
-      activePlayers.add(new Player(playerID, isBot, connectionSocket, inFromClient, outToClient));    
+   }
+
+   public void addtoActivePlayers(Player player){
+      activePlayers.add(player);
+   }
+
+   public void removeFromActivePlayers(Player player){
+      activePlayers.remove(player);
    }
 
    public Player getPlayer(int playerID) throws PlayerNotFoundException{

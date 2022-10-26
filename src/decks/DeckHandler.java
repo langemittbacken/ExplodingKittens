@@ -13,12 +13,12 @@ import cards.Card;
 public class DeckHandler {
 
     private Deck deck;
-    private Deck DiscardPile;
+    private Deck discardPile;
     private static DeckHandler instance = new DeckHandler();
 
     private DeckHandler() {
         deck = new Deck();
-        DiscardPile = new Deck();
+        discardPile = new Deck();
     }
 
     public static DeckHandler getInstance() {
@@ -44,11 +44,15 @@ public class DeckHandler {
     }
 
     public void toDiscardPile(Card card) {
-        DiscardPile.addCard(card);
+        discardPile.addCard(card);
     }
 
     public void toDiscardPile(LinkedList<Card> cards) {
-        DiscardPile.addAllCards(cards);
+        discardPile.addAllCards(cards);
+    }
+
+    public Card takeFromDiscardPile(){
+        return discardPile.drawCard();
     }
 
     public void shuffleDeck() {
@@ -60,7 +64,7 @@ public class DeckHandler {
     }
 
     public LinkedList<Card> peekDiscardPile(int startPos, int stopPos) {
-        return DiscardPile.peekDeck(startPos, stopPos);
+        return discardPile.peekDeck(startPos, stopPos);
     }
 
     public LinkedList<Card> peekDeck(int startPos, int stopPos) {
@@ -68,10 +72,14 @@ public class DeckHandler {
     }
 
     public void rearrangePlayDeck(LinkedList<Card> newOrderOnCards, int startPos, int stopPos) throws Exception {
-        DiscardPile.rearrangeDeck(newOrderOnCards, startPos, stopPos);
+        discardPile.rearrangeDeck(newOrderOnCards, startPos, stopPos);
     }
 
     public int getDiscardPileSize() {
-        return DiscardPile.deckSize();
+        return discardPile.deckSize();
+    }
+
+    public void emptyDiscardPile(){
+        discardPile.emptyDeck();
     }
 }

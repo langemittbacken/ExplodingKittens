@@ -59,7 +59,8 @@ public class MainMenu {
         myScan.close();
         try {
             GameHandler gH = new GameHandler(players, bots);
-            gH.startGame();
+            gH.doSetup();
+            gH.startGame(true);
         } catch (Exception e) {
             e.printStackTrace();
         }

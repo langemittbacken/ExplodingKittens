@@ -171,11 +171,20 @@ public class CardActions {
 
         Player attackedPlayer = askPlayerToSelectATarget(currentPlayer, "to steal a card");
 
-        Card stolenCard = attackedPlayer.takeRandomCardFromHand();
+        Card stolenCard;
+        try {
+            stolenCard = attackedPlayer.takeRandomCardFromHand();
 
-        server.sendMessage(attackedPlayer, "Player " + currentPlayer.getPlayerID() +" stole [" + stolenCard.getName() +"] from you");
+            server.sendMessage(attackedPlayer, "Player " + currentPlayer.getPlayerID() +" stole [" + stolenCard.getName() +"] from you");
 
-        currentPlayer.addCardToHand(stolenCard);
+            currentPlayer.addCardToHand(stolenCard);
+
+        } catch (CardNotFoundException e) {
+
+            server.sendMsgToAllPlayers("that player didn't have any cards");
+        }
+
+
     }
 
     public static void askForSpecifiedCardFromPlayer() {

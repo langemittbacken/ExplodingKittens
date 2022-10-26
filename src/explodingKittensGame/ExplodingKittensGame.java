@@ -1,5 +1,7 @@
 package explodingKittensGame;
 
+import java.util.LinkedList;
+
 import server.Client;
 
 /**

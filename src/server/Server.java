@@ -12,7 +12,7 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.Scanner;
 
-import players.Player;
+import players.*;
 import players.PlayerHandler;
 
 
@@ -103,6 +103,10 @@ public class Server {
 
     public String readMessage(Player player, boolean interruptable) {
         String word = " "; 
+
+        if(player.isBot()){
+            return((Bot)player).getNextMsg();
+        }
       
         if(player.isOnline())
 

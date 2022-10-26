@@ -92,4 +92,8 @@ public class Deck {
     public int deckSize() {
         return theDeck.size();
     }
+
+    public void emptyDeck() {
+        theDeck.clear();
+    }
 }
