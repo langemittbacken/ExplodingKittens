@@ -303,7 +303,7 @@ public class GameHandler {
             threadpool.execute(task);
 			}
 		}
-      threadpool.awaitTermination( (PlayerHandler.getSecondsToInterruptWithNope() * 1000) + 500, TimeUnit.MILLISECONDS);//add an additional delay to avoid concurrancy problems with the ObjectInputStream
+      threadpool.awaitTermination( (PlayerHandler.getSecondsToInterruptWithNope() * 1000) + 1000, TimeUnit.MILLISECONDS);//add an additional delay to avoid concurrancy problems with the ObjectInputStream
 		
       server.sendMsgToAllPlayers("The timewindow to play Nope passed");
 
