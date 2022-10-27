@@ -16,8 +16,7 @@ public class Skip extends Card {
 
     @Override
     public void onDrawingCard() {
-        // TODO Auto-generated method stub
-        
+        CardActions.doNothing();        
     }
     
     
